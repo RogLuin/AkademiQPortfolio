@@ -2,7 +2,7 @@
 
 namespace AkademiQPortfolio.ViewComponents.AdminLayoutViewComponents
 {
-    public class _AdminLayoutSidebarComponentPartial: ViewComponent
+    public class _AdminLayoutSidebarComponentPartial : ViewComponent
     {
         public IViewComponentResult Invoke()
         {
