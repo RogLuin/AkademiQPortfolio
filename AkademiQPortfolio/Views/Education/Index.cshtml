@@ -1,0 +1,180 @@
+﻿@model List<Education>
+@{
+    ViewData["Title"] = "Eğitim Bilgileri";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+<main class="flex-1 flex flex-col h-full overflow-hidden relative bg-background-dark">
+    <!-- Animated background effects -->
+    <div class="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+    <div class="absolute bottom-[-15%] right-[-5%] w-[300px] h-[300px] bg-accent-blue/5 rounded-full blur-[100px] pointer-events-none animate-pulse delay-1000"></div>
+    <header class="flex items-center justify-between px-8 py-6 z-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
+        <div>
+            <div class="flex items-center gap-3 mb-1">
+                <span class="material-symbols-outlined text-accent-purple text-3xl">school</span>
+                <h2 class="text-2xl font-bold text-white tracking-tight">Eğitim Hayatım</h2>
+            </div>
+            <p class="text-text-muted text-sm mt-1 ml-11">Akademik geçmişinizi buradan yönetebilirsiniz.</p>
+        </div>
+        <a href="/Education/CreateEducation" class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-accent hover:opacity-90 text-white font-bold text-sm transition-all shadow-lg shadow-accent-purple/20 active:scale-95 hover:shadow-accent-purple/40 hover:scale-105">
+            <span class="material-symbols-outlined text-[20px] group-hover:rotate-90 transition-transform duration-300">add_circle</span>
+            Yeni Eğitim Ekle
+        </a>
+    </header>
+    <div class="flex-1 overflow-y-auto p-8 pt-6 pb-20 scroll-smooth relative z-0">
+        <div class="max-w-6xl mx-auto space-y-10">
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gradient-to-br from-accent-purple/10 to-transparent rounded-2xl border border-accent-purple/20 p-5 flex items-center gap-4">
+                    <div class="size-12 rounded-xl bg-accent-purple/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-accent-purple text-2xl">history_edu</span>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-white">@Model.Count</p>
+                        <p class="text-text-muted text-xs">Toplam Eğitim</p>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-accent-blue/10 to-transparent rounded-2xl border border-accent-blue/20 p-5 flex items-center gap-4">
+                    <div class="size-12 rounded-xl bg-accent-blue/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-accent-blue text-2xl">workspace_premium</span>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-white">@Model.Select(e => e.Department).Distinct().Count()</p>
+                        <p class="text-text-muted text-xs">Farklı Bölüm</p>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-green-500/10 to-transparent rounded-2xl border border-green-500/20 p-5 flex items-center gap-4">
+                    <div class="size-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-green-400 text-2xl">verified</span>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-white">Aktif</p>
+                        <p class="text-text-muted text-xs">Durum</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-card-dark rounded-2xl border border-white/5 shadow-2xl overflow-hidden backdrop-blur-sm">
+                <div class="p-6 border-b border-white/5 bg-gradient-to-r from-white/[0.02] to-transparent flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-accent-blue/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-accent-blue">list_alt</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Eğitim Listesi</h3>
+                            <p class="text-text-muted text-xs">Tüm eğitim kayıtlarınız</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 text-text-muted text-xs">
+                        <span class="material-symbols-outlined text-sm">info</span>
+                        <span>@Model.Count Kayıt</span>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-[11px] text-gray-500 uppercase tracking-widest bg-gradient-to-r from-black/30 to-black/10">
+                                <th class="px-8 py-4 font-semibold">Kurum / Okul Adı</th>
+                                <th class="px-8 py-4 font-semibold">Bölüm</th>
+                                <th class="px-8 py-4 font-semibold">Tarih Aralığı</th>
+                                <th class="px-8 py-4 text-right font-semibold">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            @{
+                                var index = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr class="border-b border-white/5 hover:bg-gradient-to-r hover:from-accent-purple/5 hover:to-transparent transition-all duration-300 group" style="animation: fadeInUp 0.4s ease-out @(index * 0.1)s both;">
+                                    <td class="px-8 py-5">
+                                        <div class="flex items-center gap-4">
+                                            <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-purple/20 to-accent-blue/10 flex items-center justify-center text-accent-purple group-hover:from-accent-purple group-hover:to-accent-blue group-hover:text-white transition-all duration-300 shadow-lg shadow-accent-purple/10">
+                                                <span class="material-symbols-outlined text-xl">history_edu</span>
+                                            </div>
+                                            <div>
+                                                <span class="text-white font-semibold block">@item.Title</span>
+                                                <span class="text-text-muted text-xs">Eğitim Kurumu</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="size-2 rounded-full bg-accent-blue animate-pulse"></span>
+                                            <span class="text-gray-300">@item.Department</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 text-gray-400 text-xs">
+                                            <span class="material-symbols-outlined text-sm text-accent-purple">calendar_month</span>
+                                            @item.EducationDate
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5 text-right">
+                                        <div class="flex justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                            <a href="/Education/UpdateEducation/@item.EducationId" class="p-2.5 rounded-xl bg-white/5 text-gray-400 hover:text-accent-blue hover:bg-accent-blue/10 transition-all hover:scale-110 hover:shadow-lg hover:shadow-accent-blue/20" title="Düzenle">
+                                                <span class="material-symbols-outlined text-lg">edit</span>
+                                            </a>
+                                            <a href="/Education/DeleteEducation/@item.EducationId" class="p-2.5 rounded-xl bg-white/5 text-gray-400 hover:text-red-400 hover:bg-red-400/10 transition-all hover:scale-110 hover:shadow-lg hover:shadow-red-400/20" title="Sil">
+                                                <span class="material-symbols-outlined text-lg">delete</span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @if (Model.Count == 0)
+                {
+                    <div class="p-12 text-center">
+                        <div class="size-20 mx-auto rounded-full bg-white/5 flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-4xl text-text-muted">school</span>
+                        </div>
+                        <h4 class="text-white font-semibold mb-2">Henüz eğitim kaydı yok</h4>
+                        <p class="text-text-muted text-sm mb-6">İlk eğitim bilginizi ekleyerek başlayın.</p>
+                        <a href="/Education/CreateEducation" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-accent text-white font-semibold text-sm transition-all hover:opacity-90">
+                            <span class="material-symbols-outlined text-lg">add</span>
+                            Eğitim Ekle
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</main>
+<style>
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const value = '@TempData["Delete"]';
+        if (value) {
+            Swal.fire({
+                title: value,
+                icon: 'success',
+                confirmButtonText: 'Tamam',
+                background: '#151022',
+                color: '#ffffff',
+                confirmButtonColor: '#5b2bee',
+                showClass: {
+                    popup: 'animate__animated animate__fadeInUp animate__faster'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutDown animate__faster'
+                }
+            });
+        }
+    });
+</script>

@@ -1,0 +1,80 @@
+﻿@model Education
+@{
+    ViewData["Title"] = "Eğitim Güncelle";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<main class="flex-1 flex flex-col h-full overflow-hidden relative bg-background-dark">
+    <div class="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-accent-blue/5 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <header class="flex items-center justify-between px-8 py-6 z-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
+        <div>
+            <h2 class="text-2xl font-bold text-white tracking-tight">Yeni Eğitim Ekle</h2>
+            <p class="text-text-muted text-sm mt-1">Portfolyonuza yeni bir akademik geçmiş ekleyin.</p>
+        </div>
+        <a href="/Education/Index" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium border border-white/5">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            Listeye Dön
+        </a>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-8 flex items-center justify-center relative z-0">
+        <div class="w-full max-w-2xl">
+            <form method="post" class="bg-card-dark rounded-2xl border border-white/5 shadow-2xl p-8 relative overflow-hidden group">
+                <input type="hidden" value="@Model.EducationId" name="EducationId"/>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-accent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold text-white mb-2">Eğitim Detayları</h3>
+                    <p class="text-xs text-text-muted">Aşağıdaki bilgileri eksiksiz doldurunuz.</p>
+                </div>
+
+                <div class="mb-6 group/input">
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2 ml-1">Okul / Kurum Adı</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-gray-500 group-focus-within/input:text-accent-purple transition-colors">school</span>
+                        </div>
+                        <input type="text" asp-for="Title" class="w-full bg-background-darker border border-white/10 text-white text-sm rounded-xl block pl-12 p-3.5 focus:border-accent-purple focus:ring-1 focus:ring-accent-purple outline-none transition-all placeholder:text-gray-600" placeholder="Örn: İstanbul Teknik Üniversitesi">
+                    </div>
+                    <span asp-validation-for="Title" class="text-red-400 text-xs mt-1 block pl-1"></span>
+                </div>
+
+                <div class="mb-6 group/input">
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2 ml-1">Bölüm / Alan</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-gray-500 group-focus-within/input:text-accent-blue transition-colors">domain</span>
+                        </div>
+                        <input type="text" asp-for="Department" class="w-full bg-background-darker border border-white/10 text-white text-sm rounded-xl block pl-12 p-3.5 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue outline-none transition-all placeholder:text-gray-600" placeholder="Örn: Bilgisayar Mühendisliği">
+                    </div>
+                    <span asp-validation-for="Department" class="text-red-400 text-xs mt-1 block pl-1"></span>
+                </div>
+
+                <div class="mb-8 group/input">
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2 ml-1">Tarih Aralığı</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-gray-500 group-focus-within/input:text-accent-purple transition-colors">date_range</span>
+                        </div>
+                        <input type="text" asp-for="EducationDate" class="w-full bg-background-darker border border-white/10 text-white text-sm rounded-xl block pl-12 p-3.5 focus:border-accent-purple focus:ring-1 focus:ring-accent-purple outline-none transition-all placeholder:text-gray-600" placeholder="Örn: 2018 - 2022">
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-2 pl-1">* Yıl aralığı veya 'Devam Ediyor' şeklinde giriniz.</p>
+                    <span asp-validation-for="EducationDate" class="text-red-400 text-xs mt-1 block pl-1"></span>
+                </div>
+
+                <div class="flex items-center justify-end gap-4 pt-4 border-t border-white/5">
+                    <a href="/Education/Index" class="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
+                        Vazgeç
+                    </a>
+                    <button type="submit" class="flex items-center gap-2 px-8 py-2.5 rounded-lg bg-gradient-accent hover:opacity-90 text-white font-bold text-sm transition-all shadow-lg shadow-accent-purple/20 active:scale-95">
+                        <span class="material-symbols-outlined text-[18px]">save</span>
+                        Kaydet
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
