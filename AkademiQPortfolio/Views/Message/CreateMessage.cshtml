@@ -1,0 +1,117 @@
+﻿@model Message
+
+<section id="section8">
+    <div class="container">
+        <div class="row">
+            <!-- Section Title -->
+            <div class="col-md-12 text-center" style="margin-bottom: 48px;">
+                <h2>İletişime Geçin</h2>
+                <p style="max-width: 500px; margin: 0 auto;">
+                    Projeniz için benimle iletişime geçin. En kısa sürede size dönüş yapacağım.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Contact Info -->
+            <div class="col-md-4">
+                <div class="service">
+                    <div class="icon">
+                        <i class="ion-ios-email-outline"></i>
+                    </div>
+                    <h5>E-Posta</h5>
+                    <p style="margin-bottom: 0; color: var(--text-muted);">hello@gorkem.dev</p>
+                </div>
+
+                <div class="service">
+                    <div class="icon">
+                        <i class="ion-ios-location-outline"></i>
+                    </div>
+                    <h5>Konum</h5>
+                    <p style="margin-bottom: 0; color: var(--text-muted);">Türkiye</p>
+                </div>
+
+                <div class="service">
+                    <div class="icon">
+                        <i class="ion-ios-clock-outline"></i>
+                    </div>
+                    <h5>Yanıt Süresi</h5>
+                    <p style="margin-bottom: 0; color: var(--text-muted);">24 saat içinde</p>
+                </div>
+
+                <!-- Social Icons -->
+                <div style="text-align: center; margin-top: 24px;">
+                    <a href="#" class="social-icon"><i class="ion-social-github"></i></a>
+                    <a href="#" class="social-icon"><i class="ion-social-linkedin"></i></a>
+                    <a href="#" class="social-icon"><i class="ion-social-twitter"></i></a>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-md-8">
+                <div class="leave-comment">
+                    <div class="inner">
+                        <form method="post" asp-controller="Message" asp-action="CreateMessage">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label>İsim Soyisim</label>
+                                        <input type="text" name="SenderName" placeholder="Adınızı giriniz" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label>E-Posta</label>
+                                        <input type="email" name="SenderEmail" placeholder="email@example.com" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Konu</label>
+                                <select name="MessageSubject" required>
+                                    <option value="" disabled selected>Konu seçiniz...</option>
+                                    <option value="İş Teklifi">💼 Proje Teklifi</option>
+                                    <option value="Web / API Geliştirme">💻 Web / API Geliştirme</option>
+                                    <option value="Eğitim / Kurumsal Talep">🎓 Eğitim / Kurumsal Talep</option>
+                                    <option value="Teknik Destek">🛠️ Teknik Destek</option>
+                                    <option value="Diğer">📝 Diğer</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Mesajınız</label>
+                                <textarea name="MessageText" rows="5" placeholder="Mesajınızı yazın..." required></textarea>
+                            </div>
+
+                            <div class="button-row" style="margin-top: 24px;">
+                                <button type="submit" class="button solid-button purple icon-right">
+                                    Mesajı Gönder <i class="ion-android-send"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const messageSent = '@TempData["MessageSent"]';
+        if (messageSent) {
+            Swal.fire({
+                title: 'Mesaj Gönderildi!',
+                text: messageSent,
+                icon: 'success',
+                confirmButtonText: 'Tamam',
+                background: '#111827',
+                color: '#f9fafb',
+                confirmButtonColor: '#6366f1'
+            });
+        }
+    });
+</script>

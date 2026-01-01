@@ -1,142 +1,275 @@
-﻿﻿@{
+﻿@{
     ViewData["Title"] = "StatisticsCards";
     Layout = "~/Views/Admin/Index.cshtml";
 }
 
-<div class="p-6 bg-gray-50 min-h-screen">
-    <div class="max-w-7xl mx-auto">
-        <h2 class="text-2xl font-bold text-gray-800 mb-8 flex align-center gap-2">
-            <span class="w-2 h-8 bg-indigo-600 rounded-full"></span>
-            Genel Bakış & İstatistikler
-        </h2>
+<main class="flex-1 flex flex-col h-full overflow-hidden relative bg-background-dark">
+    <!-- Animated background effects -->
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent-purple/5 rounded-full blur-[150px] pointer-events-none animate-pulse"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-accent-blue/5 rounded-full blur-[120px] pointer-events-none animate-pulse delay-1000"></div>
+    <div class="absolute top-[40%] right-[20%] w-[300px] h-[300px] bg-emerald-500/3 rounded-full blur-[100px] pointer-events-none"></div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <header class="flex items-center justify-between px-8 py-6 z-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex items-center gap-4">
+            <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-purple/20 to-accent-blue/20 flex items-center justify-center shadow-lg shadow-accent-purple/10">
+                <span class="material-symbols-outlined text-accent-purple text-2xl">analytics</span>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-white tracking-tight">Genel Bakış & İstatistikler</h2>
+                <p class="text-text-muted text-sm mt-0.5">Portfolyo performansınızı takip edin.</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-text-muted">
+                <span class="size-2 rounded-full bg-green-400 animate-pulse"></span>
+                Canlı Veriler
+            </div>
+        </div>
+    </header>
 
-            <div class="relative overflow-hidden group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-50 rounded-full group-hover:scale-110 transition-transform duration-500"></div>
-                <div class="relative flex items-center gap-4">
-                    <div class="p-4 bg-indigo-600 rounded-xl text-white shadow-lg shadow-indigo-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                        </svg>
+    <div class="flex-1 overflow-y-auto p-8 pt-6 pb-20 scroll-smooth relative z-0">
+        <div class="max-w-7xl mx-auto space-y-8">
+
+            <!-- Main Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" style="animation: fadeInUp 0.5s ease-out;">
+
+                <!-- Messages Card -->
+                <div class="group relative bg-card-dark/80 backdrop-blur-xl p-6 rounded-3xl border border-white/5 hover:border-accent-purple/30 transition-all duration-500 overflow-hidden">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-accent-purple/10 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-purple to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                    <div class="relative flex items-center gap-4 mb-6">
+                        <div class="p-4 bg-gradient-to-br from-accent-purple to-accent-blue rounded-2xl text-white shadow-lg shadow-accent-purple/20 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-2xl">mail</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-text-muted uppercase tracking-wider">Toplam Mesaj</p>
+                            <h3 class="text-4xl font-black text-white">@ViewBag.messageCount</h3>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-500">Toplam Mesaj</p>
-                        <h3 class="text-3xl font-bold text-gray-800">@ViewBag.messageCount</h3>
+
+                    <div class="relative flex gap-3">
+                        <div class="flex-1 bg-green-500/10 p-4 rounded-2xl border border-green-500/20 group-hover:border-green-500/40 transition-all">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="size-2 rounded-full bg-green-400"></span>
+                                <p class="text-xs text-green-400 font-semibold">Okundu</p>
+                            </div>
+                            <p class="text-2xl font-bold text-green-400">@ViewBag.messageCountByIsReadTrue</p>
+                        </div>
+                        <div class="flex-1 bg-red-500/10 p-4 rounded-2xl border border-red-500/20 group-hover:border-red-500/40 transition-all">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="size-2 rounded-full bg-red-400 animate-pulse"></span>
+                                <p class="text-xs text-red-400 font-semibold">Okunmadı</p>
+                            </div>
+                            <p class="text-2xl font-bold text-red-400">@ViewBag.messageCountByIsReadFalse</p>
+                        </div>
                     </div>
                 </div>
-                <div class="mt-6 flex gap-3">
-                    <div class="flex-1 bg-green-50 p-3 rounded-lg border border-green-100">
-                        <p class="text-xs text-green-600 font-semibold">Okundu</p>
-                        <p class="text-lg font-bold text-green-700">@ViewBag.messageCountByIsReadTrue</p>
+
+                <!-- Skills Card -->
+                <div class="group relative bg-card-dark/80 backdrop-blur-xl p-6 rounded-3xl border border-white/5 hover:border-amber-500/30 transition-all duration-500 overflow-hidden">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                    <div class="relative flex items-center gap-4 mb-6">
+                        <div class="p-4 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl text-white shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-2xl">bolt</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-text-muted uppercase tracking-wider">Toplam Yetenek</p>
+                            <h3 class="text-4xl font-black text-white">@ViewBag.skillCount</h3>
+                        </div>
                     </div>
-                    <div class="flex-1 bg-red-50 p-3 rounded-lg border border-red-100">
-                        <p class="text-xs text-red-600 font-semibold">Okunmadı</p>
-                        <p class="text-lg font-bold text-red-700">@ViewBag.messageCountByIsReadFalse</p>
+
+                    <div class="relative">
+                        <div class="flex justify-between mb-3">
+                            <span class="text-xs font-medium text-text-muted">Genel Yetkinlik Ortalaması</span>
+                            <span class="text-sm font-bold text-amber-400">%@Convert.ToDecimal(ViewBag.skillAvgValue).ToString("0")</span>
+                        </div>
+                        <div class="w-full bg-white/5 rounded-full h-3 overflow-hidden">
+                            <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-3 rounded-full shadow-lg shadow-amber-500/30 transition-all duration-1000 relative" style="width: @ViewBag.skillAvgValue%">
+                                <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-[10px] text-text-muted">
+                            <span>0%</span>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Card -->
+                <div class="group relative bg-gradient-to-br from-emerald-600 to-teal-700 p-6 rounded-3xl shadow-xl shadow-emerald-500/10 hover:shadow-emerald-500/20 hover:scale-[1.02] transition-all duration-500 overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\" 60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.03\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\" /%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
+                    <div class="absolute top-4 right-4 size-24 border border-white/10 rounded-full"></div>
+                    <div class="absolute top-8 right-8 size-16 border border-white/10 rounded-full"></div>
+
+                    <div class="relative flex flex-col h-full justify-between">
+                        <div class="flex justify-between items-start">
+                            <div class="p-3 bg-white/10 backdrop-blur-md rounded-xl text-white">
+                                <span class="material-symbols-outlined text-2xl">workspace_premium</span>
+                            </div>
+                            <span class="text-white/80 text-xs font-medium border border-white/20 px-3 py-1.5 rounded-full backdrop-blur-sm bg-white/5">
+                                ⚡ Performans
+                            </span>
+                        </div>
+                        <div class="mt-8 text-white">
+                            <h3 class="text-5xl font-black tracking-tight">@ViewBag.skillValueBiggerThan70</h3>
+                            <p class="text-emerald-100 text-sm mt-1">70 Puan Üzeri Uzmanlık</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-white/10 text-white/70 text-xs flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">trending_up</span>
+                            Yüksek yetkinlik seviyesindeki yetenekleriniz
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="relative overflow-hidden group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-amber-50 rounded-full group-hover:scale-110 transition-transform duration-500"></div>
-                <div class="relative flex items-center gap-4">
-                    <div class="p-4 bg-amber-500 rounded-xl text-white shadow-lg shadow-amber-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
+            <!-- Message Categories Section -->
+            <div class="mt-4" style="animation: fadeInUp 0.5s ease-out 0.2s both;">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-white/5 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-accent-blue">category</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Mesaj Kategorileri</h3>
+                            <p class="text-xs text-text-muted">Gelen mesajların konu dağılımı</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-500">Toplam Yetenek</p>
-                        <h3 class="text-3xl font-bold text-gray-800">@ViewBag.skillCount</h3>
-                    </div>
+                    <a href="/Message/Inbox" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all text-xs font-medium border border-white/5">
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        Tümünü Gör
+                    </a>
                 </div>
-                <div class="mt-6">
-                    <div class="flex justify-between mb-2">
-                        <span class="text-xs font-semibold text-gray-600 italic">Genel Yetkinlik Ortalaması</span>
-                        <span class="text-xs font-bold text-amber-600">%@Convert.ToDecimal(ViewBag.skillAvgValue).ToString("0")</span>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                    <!-- Project Offers -->
+                    <div class="group relative bg-card-dark/60 backdrop-blur-xl border border-white/5 rounded-3xl p-6 hover:bg-accent-purple/10 hover:border-accent-purple/30 transition-all duration-500 cursor-pointer">
+                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-accent-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-3 bg-accent-purple/10 rounded-2xl group-hover:bg-accent-purple/20 transition-all group-hover:scale-110">
+                                <span class="material-symbols-outlined text-xl text-accent-purple">work</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-3xl font-black text-white group-hover:text-accent-purple transition-colors">@ViewBag.messageSubjectByWorkOffer</span>
+                                <span class="material-symbols-outlined text-accent-purple text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_outward</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white group-hover:text-accent-purple transition-colors">Proje Teklifleri</h4>
+                            <p class="text-xs text-text-muted mt-1">İş Birliği Talepleri</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-white/5">
+                            <div class="flex items-center gap-2 text-xs text-text-muted">
+                                <span class="size-1.5 rounded-full bg-accent-purple"></span>
+                                <span>Aktif teklifler</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="w-full bg-gray-100 rounded-full h-3">
-                        <div class="bg-amber-500 h-3 rounded-full shadow-inner transition-all duration-1000" style="width: @ViewBag.skillAvgValue%"></div>
+
+                    <!-- Web / API -->
+                    <div class="group relative bg-card-dark/60 backdrop-blur-xl border border-white/5 rounded-3xl p-6 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all duration-500 cursor-pointer">
+                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-3 bg-emerald-500/10 rounded-2xl group-hover:bg-emerald-500/20 transition-all group-hover:scale-110">
+                                <span class="material-symbols-outlined text-xl text-emerald-400">code</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-3xl font-black text-white group-hover:text-emerald-400 transition-colors">@ViewBag.messageSubjectByApiDevelopment</span>
+                                <span class="material-symbols-outlined text-emerald-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_outward</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Web / API</h4>
+                            <p class="text-xs text-text-muted mt-1">Geliştirme Talepleri</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-white/5">
+                            <div class="flex items-center gap-2 text-xs text-text-muted">
+                                <span class="size-1.5 rounded-full bg-emerald-400"></span>
+                                <span>Teknik projeler</span>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Education -->
+                    <div class="group relative bg-card-dark/60 backdrop-blur-xl border border-white/5 rounded-3xl p-6 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all duration-500 cursor-pointer">
+                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-3 bg-amber-500/10 rounded-2xl group-hover:bg-amber-500/20 transition-all group-hover:scale-110">
+                                <span class="material-symbols-outlined text-xl text-amber-400">school</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-3xl font-black text-white group-hover:text-amber-400 transition-colors">@ViewBag.messageSubjectByEducationOffer</span>
+                                <span class="material-symbols-outlined text-amber-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_outward</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Eğitim & Kurumsal</h4>
+                            <p class="text-xs text-text-muted mt-1">Akademik Talepler</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-white/5">
+                            <div class="flex items-center gap-2 text-xs text-text-muted">
+                                <span class="size-1.5 rounded-full bg-amber-400"></span>
+                                <span>Eğitim fırsatları</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <div class="relative overflow-hidden group bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-2xl shadow-lg shadow-emerald-200 hover:scale-[1.02] transition-all duration-300">
-                <div class="relative flex flex-col h-full justify-between">
-                    <div class="flex justify-between items-start">
-                        <div class="p-3 bg-white/20 backdrop-blur-md rounded-lg text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+            <!-- Quick Actions -->
+            <div class="mt-4 p-6 bg-card-dark/40 backdrop-blur-xl rounded-3xl border border-white/5" style="animation: fadeInUp 0.5s ease-out 0.4s both;">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-purple/20 to-accent-blue/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-accent-purple">rocket_launch</span>
                         </div>
-                        <span class="text-white/80 text-xs font-medium border border-white/30 px-2 py-1 rounded-full backdrop-blur-sm">Performans</span>
-                    </div>
-                    <div class="mt-8 text-white">
-                        <h3 class="text-4xl font-extrabold">@ViewBag.skillValueBiggerThan70</h3>
-                        <p class="text-emerald-100 text-sm opacity-90">70 Puan Üzeri Uzmanlık</p>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-white/20 text-white/90 text-xs italic">
-                        Yüksek yetkinlik seviyesindeki yeteneklerinizin özeti.
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-12">
-                <h3 class="text-xl font-semibold text-gray-700 mb-6 flex items-center gap-2">
-                    <span class="w-1.5 h-6 bg-slate-400 rounded-full"></span>
-                    Mesaj Kategorileri
-                </h3>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                    <div class="group relative bg-white border border-slate-100 rounded-3xl p-5 hover:bg-indigo-600 transition-all duration-500 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <div class="p-3 bg-indigo-50 rounded-2xl group-hover:bg-indigo-500/30 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <span class="text-2xl font-black text-indigo-600 group-hover:text-white">@ViewBag.messageSubjectByWorkOffer</span>
-                        </div>
-                        <div class="mt-4">
-                            <h4 class="text-sm font-bold text-gray-800 group-hover:text-white transition-colors">Proje Teklifleri</h4>
-                            <p class="text-xs text-gray-400 group-hover:text-indigo-100 mt-1 uppercase tracking-tighter">İş Birliği Talepleri</p>
+                        <div>
+                            <h4 class="text-white font-bold">Hızlı Erişim</h4>
+                            <p class="text-xs text-text-muted">Sık kullanılan işlemler</p>
                         </div>
                     </div>
-
-                    <div class="group relative bg-white border border-slate-100 rounded-3xl p-5 hover:bg-emerald-600 transition-all duration-500 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <div class="p-3 bg-emerald-50 rounded-2xl group-hover:bg-emerald-500/30 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                            </div>
-                            <span class="text-2xl font-black text-emerald-600 group-hover:text-white">@ViewBag.messageSubjectByApiDevelopment</span>
-                        </div>
-                        <div class="mt-4">
-                            <h4 class="text-sm font-bold text-gray-800 group-hover:text-white transition-colors">Web / API</h4>
-                            <p class="text-xs text-gray-400 group-hover:text-emerald-100 mt-1 uppercase tracking-tighter">Geliştirme Talepleri</p>
-                        </div>
+                    <div class="flex items-center gap-3">
+                        <a href="/Message/Inbox" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium border border-white/5">
+                            <span class="material-symbols-outlined text-lg">inbox</span>
+                            Mesajlar
+                        </a>
+                        <a href="/Skill/Index" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium border border-white/5">
+                            <span class="material-symbols-outlined text-lg">stars</span>
+                            Yetenekler
+                        </a>
+                        <a href="/Education/Index" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-accent hover:opacity-90 text-white font-bold text-sm transition-all shadow-lg shadow-accent-purple/20">
+                            <span class="material-symbols-outlined text-lg">add</span>
+                            Yeni Ekle
+                        </a>
                     </div>
-
-                    <div class="group relative bg-white border border-slate-100 rounded-3xl p-5 hover:bg-amber-500 transition-all duration-500 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <div class="p-3 bg-amber-50 rounded-2xl group-hover:bg-amber-400/30 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
-                            </div>
-                            <span class="text-2xl font-black text-amber-600 group-hover:text-white">@ViewBag.messageSubjectByEducationOffer</span>
-                        </div>
-                        <div class="mt-4">
-                            <h4 class="text-sm font-bold text-gray-800 group-hover:text-white transition-colors">Eğitim & Kurumsal</h4>
-                            <p class="text-xs text-gray-400 group-hover:text-amber-50 mt-1 uppercase tracking-tighter">Akademik Talepler</p>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
         </div>
     </div>
-</div>
+</main>
+
+<style>
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .delay-1000 {
+        animation-delay: 1000ms;
+    }
+</style>

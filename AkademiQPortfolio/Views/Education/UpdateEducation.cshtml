@@ -3,78 +3,197 @@
     ViewData["Title"] = "Eğitim Güncelle";
     Layout = "~/Views/Admin/Index.cshtml";
 }
-
 <main class="flex-1 flex flex-col h-full overflow-hidden relative bg-background-dark">
-    <div class="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-accent-blue/5 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[120px] pointer-events-none"></div>
-
+    <!-- Animated background effects -->
+    <div class="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-accent-blue/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+    <div class="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[120px] pointer-events-none animate-pulse delay-700"></div>
+    <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-blue/3 rounded-full blur-[150px] pointer-events-none"></div>
     <header class="flex items-center justify-between px-8 py-6 z-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
-        <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight">Yeni Eğitim Ekle</h2>
-            <p class="text-text-muted text-sm mt-1">Portfolyonuza yeni bir akademik geçmiş ekleyin.</p>
+        <div class="flex items-center gap-4">
+            <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 flex items-center justify-center shadow-lg shadow-accent-blue/10">
+                <span class="material-symbols-outlined text-accent-blue text-2xl">edit_square</span>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-white tracking-tight">Eğitim Güncelle</h2>
+                <p class="text-text-muted text-sm mt-0.5">Mevcut eğitim bilgilerinizi düzenleyin.</p>
+            </div>
         </div>
-        <a href="/Education/Index" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium border border-white/5">
-            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        <a href="/Education/Index" class="group flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium border border-white/5 hover:border-white/10">
+            <span class="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
             Listeye Dön
         </a>
     </header>
-
     <div class="flex-1 overflow-y-auto p-8 flex items-center justify-center relative z-0">
-        <div class="w-full max-w-2xl">
-            <form method="post" class="bg-card-dark rounded-2xl border border-white/5 shadow-2xl p-8 relative overflow-hidden group">
-                <input type="hidden" value="@Model.EducationId" name="EducationId"/>
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-accent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+        <div class="w-full max-w-2xl" style="animation: fadeInUp 0.5s ease-out;">
 
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold text-white mb-2">Eğitim Detayları</h3>
-                    <p class="text-xs text-text-muted">Aşağıdaki bilgileri eksiksiz doldurunuz.</p>
+            <!-- Edit Mode Indicator -->
+            <div class="flex items-center justify-center gap-3 mb-8">
+                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-accent-blue/10 border border-accent-blue/20">
+                    <span class="size-2 rounded-full bg-accent-blue animate-pulse"></span>
+                    <span class="text-accent-blue text-sm font-medium">Düzenleme Modu</span>
                 </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                    <span class="material-symbols-outlined text-gray-400 text-sm">tag</span>
+                    <span class="text-gray-400 text-sm">ID: @Model.EducationId</span>
+                </div>
+            </div>
+            <form method="post" class="bg-card-dark/80 backdrop-blur-xl rounded-3xl border border-white/5 shadow-2xl p-8 relative overflow-hidden group hover:border-white/10 transition-all duration-500">
+                <input type="hidden" value="@Model.EducationId" name="EducationId" />
 
-                <div class="mb-6 group/input">
-                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2 ml-1">Okul / Kurum Adı</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <span class="material-symbols-outlined text-gray-500 group-focus-within/input:text-accent-purple transition-colors">school</span>
-                        </div>
-                        <input type="text" asp-for="Title" class="w-full bg-background-darker border border-white/10 text-white text-sm rounded-xl block pl-12 p-3.5 focus:border-accent-purple focus:ring-1 focus:ring-accent-purple outline-none transition-all placeholder:text-gray-600" placeholder="Örn: İstanbul Teknik Üniversitesi">
+                <!-- Animated gradient border - Blue theme for edit -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-blue via-accent-purple to-accent-blue bg-[length:200%_100%] animate-gradient opacity-60 group-hover:opacity-100 transition-opacity"></div>
+
+                <!-- Corner decorations -->
+                <div class="absolute top-4 right-4 size-20 border border-white/5 rounded-full opacity-30"></div>
+                <div class="absolute top-6 right-6 size-12 border border-white/5 rounded-full opacity-20"></div>
+                <div class="mb-8 relative">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="material-symbols-outlined text-accent-blue text-xl">history_edu</span>
+                        <h3 class="text-xl font-bold text-white">Eğitim Detayları</h3>
+                        <span class="ml-auto px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-medium border border-amber-500/20">
+                            Düzenleniyor
+                        </span>
                     </div>
-                    <span asp-validation-for="Title" class="text-red-400 text-xs mt-1 block pl-1"></span>
+                    <p class="text-xs text-text-muted pl-8">Değişikliklerinizi yapıp kaydedin.</p>
                 </div>
-
-                <div class="mb-6 group/input">
-                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2 ml-1">Bölüm / Alan</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <span class="material-symbols-outlined text-gray-500 group-focus-within/input:text-accent-blue transition-colors">domain</span>
+                <div class="space-y-6">
+                    <!-- School Name Input -->
+                    <div class="group/input" style="animation: fadeInUp 0.5s ease-out 0.1s both;">
+                        <label class="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-3 ml-1">
+                            <span class="size-1.5 rounded-full bg-accent-purple"></span>
+                            Okul / Kurum Adı
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <div class="size-8 rounded-lg bg-accent-purple/10 flex items-center justify-center group-focus-within/input:bg-accent-purple/20 transition-all">
+                                    <span class="material-symbols-outlined text-lg text-accent-purple">school</span>
+                                </div>
+                            </div>
+                            <input type="text" asp-for="Title" class="w-full bg-background-darker/50 border-2 border-white/5 text-white text-sm rounded-2xl block pl-16 pr-4 py-4 focus:border-accent-purple/50 focus:bg-background-darker focus:shadow-lg focus:shadow-accent-purple/5 outline-none transition-all placeholder:text-gray-600 hover:border-white/10" placeholder="Örn: İstanbul Teknik Üniversitesi">
+                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none opacity-0 group-focus-within/input:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined text-accent-purple text-sm">edit</span>
+                            </div>
                         </div>
-                        <input type="text" asp-for="Department" class="w-full bg-background-darker border border-white/10 text-white text-sm rounded-xl block pl-12 p-3.5 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue outline-none transition-all placeholder:text-gray-600" placeholder="Örn: Bilgisayar Mühendisliği">
+                        <span asp-validation-for="Title" class="text-red-400 text-xs mt-2 block pl-1"></span>
                     </div>
-                    <span asp-validation-for="Department" class="text-red-400 text-xs mt-1 block pl-1"></span>
-                </div>
-
-                <div class="mb-8 group/input">
-                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2 ml-1">Tarih Aralığı</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <span class="material-symbols-outlined text-gray-500 group-focus-within/input:text-accent-purple transition-colors">date_range</span>
+                    <!-- Department Input -->
+                    <div class="group/input" style="animation: fadeInUp 0.5s ease-out 0.2s both;">
+                        <label class="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-3 ml-1">
+                            <span class="size-1.5 rounded-full bg-accent-blue"></span>
+                            Bölüm / Alan
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <div class="size-8 rounded-lg bg-accent-blue/10 flex items-center justify-center group-focus-within/input:bg-accent-blue/20 transition-all">
+                                    <span class="material-symbols-outlined text-lg text-accent-blue">domain</span>
+                                </div>
+                            </div>
+                            <input type="text" asp-for="Department" class="w-full bg-background-darker/50 border-2 border-white/5 text-white text-sm rounded-2xl block pl-16 pr-4 py-4 focus:border-accent-blue/50 focus:bg-background-darker focus:shadow-lg focus:shadow-accent-blue/5 outline-none transition-all placeholder:text-gray-600 hover:border-white/10" placeholder="Örn: Bilgisayar Mühendisliği">
+                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none opacity-0 group-focus-within/input:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined text-accent-blue text-sm">edit</span>
+                            </div>
                         </div>
-                        <input type="text" asp-for="EducationDate" class="w-full bg-background-darker border border-white/10 text-white text-sm rounded-xl block pl-12 p-3.5 focus:border-accent-purple focus:ring-1 focus:ring-accent-purple outline-none transition-all placeholder:text-gray-600" placeholder="Örn: 2018 - 2022">
+                        <span asp-validation-for="Department" class="text-red-400 text-xs mt-2 block pl-1"></span>
                     </div>
-                    <p class="text-[10px] text-gray-500 mt-2 pl-1">* Yıl aralığı veya 'Devam Ediyor' şeklinde giriniz.</p>
-                    <span asp-validation-for="EducationDate" class="text-red-400 text-xs mt-1 block pl-1"></span>
+                    <!-- Date Range Input -->
+                    <div class="group/input" style="animation: fadeInUp 0.5s ease-out 0.3s both;">
+                        <label class="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-3 ml-1">
+                            <span class="size-1.5 rounded-full bg-green-400"></span>
+                            Tarih Aralığı
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <div class="size-8 rounded-lg bg-green-500/10 flex items-center justify-center group-focus-within/input:bg-green-500/20 transition-all">
+                                    <span class="material-symbols-outlined text-lg text-green-400">date_range</span>
+                                </div>
+                            </div>
+                            <input type="text" asp-for="EducationDate" class="w-full bg-background-darker/50 border-2 border-white/5 text-white text-sm rounded-2xl block pl-16 pr-4 py-4 focus:border-green-500/50 focus:bg-background-darker focus:shadow-lg focus:shadow-green-500/5 outline-none transition-all placeholder:text-gray-600 hover:border-white/10" placeholder="Örn: 2018 - 2022">
+                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none opacity-0 group-focus-within/input:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined text-green-400 text-sm">edit</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 mt-2 pl-1">
+                            <span class="material-symbols-outlined text-xs text-gray-500">info</span>
+                            <p class="text-[11px] text-gray-500">Yıl aralığı veya 'Devam Ediyor' şeklinde giriniz.</p>
+                        </div>
+                        <span asp-validation-for="EducationDate" class="text-red-400 text-xs mt-1 block pl-1"></span>
+                    </div>
                 </div>
-
-                <div class="flex items-center justify-end gap-4 pt-4 border-t border-white/5">
-                    <a href="/Education/Index" class="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
-                        Vazgeç
-                    </a>
-                    <button type="submit" class="flex items-center gap-2 px-8 py-2.5 rounded-lg bg-gradient-accent hover:opacity-90 text-white font-bold text-sm transition-all shadow-lg shadow-accent-purple/20 active:scale-95">
-                        <span class="material-symbols-outlined text-[18px]">save</span>
-                        Kaydet
-                    </button>
+                <!-- Update Warning -->
+                <div class="mt-8 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10" style="animation: fadeInUp 0.5s ease-out 0.4s both;">
+                    <div class="flex items-start gap-3">
+                        <div class="size-8 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="material-symbols-outlined text-amber-400 text-sm">tips_and_updates</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-white mb-1">Güncelleme Notu</p>
+                            <p class="text-[11px] text-text-muted leading-relaxed">Değişiklikleriniz kaydedildikten sonra portfolyonuzda hemen görünecektir.</p>
+                        </div>
+                    </div>
                 </div>
-
+                <div class="flex items-center justify-between gap-4 pt-6 mt-8 border-t border-white/5" style="animation: fadeInUp 0.5s ease-out 0.5s both;">
+                    <div class="flex items-center gap-2 text-xs text-text-muted">
+                        <span class="material-symbols-outlined text-sm text-green-400">check_circle</span>
+                        <span>Otomatik kaydedilmez</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a href="/Education/Index" class="px-6 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all border border-transparent hover:border-white/10">
+                            Vazgeç
+                        </a>
+                        <button type="submit" class="group/btn flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-accent-blue to-accent-purple hover:opacity-90 text-white font-bold text-sm transition-all shadow-lg shadow-accent-blue/20 active:scale-95 hover:shadow-accent-blue/40 hover:scale-[1.02]">
+                            <span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform">sync</span>
+                            Güncelle
+                        </button>
+                    </div>
+                </div>
             </form>
+            <!-- Additional Actions -->
+            <div class="flex items-center justify-center gap-6 mt-6" style="animation: fadeInUp 0.5s ease-out 0.6s both;">
+                <a href="/Education/DeleteEducation/@Model.EducationId" class="inline-flex items-center gap-2 text-xs text-red-400/60 hover:text-red-400 transition-colors">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                    Bu kaydı sil
+                </a>
+                <span class="text-white/10">|</span>
+                <a href="#" class="inline-flex items-center gap-2 text-xs text-text-muted hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-sm">help</span>
+                    Yardım
+                </a>
+            </div>
         </div>
     </div>
 </main>
+<style>
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .animate-gradient {
+        animation: gradient 3s ease infinite;
+    }
+
+    .delay-700 {
+        animation-delay: 700ms;
+    }
+</style>

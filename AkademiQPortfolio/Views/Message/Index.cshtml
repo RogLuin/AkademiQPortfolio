@@ -1,0 +1,372 @@
+﻿@model IEnumerable<AkademiQPortfolio.Entities.Message>
+@{
+    ViewData["Title"] = "Mesajlar";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<main class="flex-1 flex flex-col h-full overflow-hidden relative bg-background-dark">
+    <!-- Animated background effects -->
+    <div class="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+    <div class="absolute bottom-[-15%] right-[-5%] w-[300px] h-[300px] bg-accent-blue/5 rounded-full blur-[100px] pointer-events-none animate-pulse delay-1000"></div>
+
+    <header class="flex items-center justify-between px-8 py-6 z-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex items-center gap-4">
+            <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-purple/20 to-accent-blue/20 flex items-center justify-center shadow-lg shadow-accent-purple/10">
+                <span class="material-symbols-outlined text-accent-purple text-2xl">inbox</span>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-white tracking-tight">Gelen Kutusu</h2>
+                <p class="text-text-muted text-sm mt-0.5">Portfolyonuza gelen mesajları yönetin.</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent-purple/10 border border-accent-purple/20 text-xs text-accent-purple font-medium">
+                <span class="material-symbols-outlined text-sm">mail</span>
+                <span>@Model.Count() Mesaj</span>
+            </div>
+            <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-400 font-medium">
+                <span class="size-2 rounded-full bg-red-400 animate-pulse"></span>
+                <span>@Model.Count(x => x.IsRead == false) Okunmamış</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-8 pt-6 pb-20 scroll-smooth relative z-0">
+        <div class="max-w-6xl mx-auto space-y-6">
+
+            <!-- Filter Tabs -->
+            <div class="flex items-center gap-2 mb-6" style="animation: fadeInUp 0.4s ease-out;">
+                <button class="filter-btn active flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all" data-filter="all">
+                    <span class="material-symbols-outlined text-lg">all_inbox</span>
+                    Tümü
+                </button>
+                <button class="filter-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all" data-filter="unread">
+                    <span class="material-symbols-outlined text-lg">mark_email_unread</span>
+                    Okunmamış
+                </button>
+                <button class="filter-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all" data-filter="read">
+                    <span class="material-symbols-outlined text-lg">drafts</span>
+                    Okunmuş
+                </button>
+            </div>
+
+            <!-- Messages List -->
+            <div class="bg-card-dark/80 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden" style="animation: fadeInUp 0.5s ease-out 0.1s both;">
+                <div class="divide-y divide-white/5">
+                    @{
+                        var index = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        var isUnread = item.IsRead == false;
+                        <div class="message-item group relative hover:bg-white/[0.02] transition-all duration-300 cursor-pointer @(isUnread ? "unread bg-accent-purple/[0.02]" : "read")"
+                             data-id="@item.MessageId"
+                             style="animation: fadeInUp 0.4s ease-out @(index * 0.05)s both;">
+
+                            @if (isUnread)
+                            {
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-accent-purple"></div>
+                            }
+
+                            <div class="flex items-center gap-4 p-5 pl-6">
+                                <!-- Avatar -->
+                                <div class="relative flex-shrink-0">
+                                    <div class="size-12 rounded-2xl bg-gradient-to-br @(isUnread ? "from-accent-purple to-accent-blue" : "from-white/10 to-white/5") flex items-center justify-center text-@(isUnread ? "white" : "gray-400") font-bold text-lg shadow-lg @(isUnread ? "shadow-accent-purple/20" : "")">
+                                        @item.SenderName?.Substring(0, 1).ToUpper()
+                                    </div>
+                                    @if (isUnread)
+                                    {
+                                        <div class="absolute -top-1 -right-1 size-4 rounded-full bg-accent-purple border-2 border-background-dark flex items-center justify-center">
+                                            <span class="size-2 rounded-full bg-white"></span>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Content -->
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-3 mb-1">
+                                        <h4 class="text-white font-semibold truncate @(isUnread ? "text-white" : "text-gray-300")">@item.SenderName</h4>
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-medium @GetSubjectBadgeClass(item.MessageSubject)">
+                                            @item.MessageSubject
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-text-muted truncate mb-1">@item.SenderEmail</p>
+                                    <p class="text-xs text-gray-500 truncate max-w-xl">
+                                        @(item.MessageText?.Length > 80 ? item.MessageText.Substring(0, 80) + "..." : item.MessageText)
+                                    </p>
+                                </div>
+
+                                <!-- Meta & Actions -->
+                                <div class="flex items-center gap-4 flex-shrink-0">
+                                    <div class="text-right">
+                                        <p class="text-xs text-gray-400 mb-1">
+                                            @(item.SendDate.HasValue ? item.SendDate.Value.ToString("dd MMM") : "")
+                                        </p>
+                                        <p class="text-[10px] text-gray-500">
+                                            @(item.SendDate.HasValue ? item.SendDate.Value.ToString("HH:mm") : "")
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button onclick="event.stopPropagation(); openMessage(@item.MessageId)" class="p-2 rounded-xl bg-accent-blue/10 text-accent-blue hover:bg-accent-blue/20 transition-all" title="Görüntüle">
+                                            <span class="material-symbols-outlined text-lg">visibility</span>
+                                        </button>
+                                        <a href="/Message/DeleteMessage/@item.MessageId" onclick="event.stopPropagation();" class="p-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all" title="Sil">
+                                            <span class="material-symbols-outlined text-lg">delete</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        index++;
+                    }
+                </div>
+
+                @if (!Model.Any())
+                {
+                    <div class="p-16 text-center">
+                        <div class="size-24 mx-auto rounded-full bg-white/5 flex items-center justify-center mb-6">
+                            <span class="material-symbols-outlined text-5xl text-text-muted">inbox</span>
+                        </div>
+                        <h4 class="text-xl text-white font-semibold mb-2">Henüz mesaj yok</h4>
+                        <p class="text-text-muted text-sm">Portfolyonuza gelen mesajlar burada görünecek.</p>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- Message Detail Modal -->
+<div id="messageModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl bg-card-dark rounded-3xl border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b border-white/5 bg-white/[0.02]">
+            <div class="flex items-center gap-4">
+                <div id="modalAvatar" class="size-14 rounded-2xl bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-accent-purple/20">
+                    ?
+                </div>
+                <div>
+                    <h3 id="modalSenderName" class="text-lg font-bold text-white">Gönderen</h3>
+                    <p id="modalSenderEmail" class="text-sm text-text-muted">email@example.com</p>
+                </div>
+            </div>
+            <button onclick="closeModal()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <div class="flex items-center gap-3 mb-6">
+                <span id="modalSubject" class="px-3 py-1 rounded-full text-xs font-medium bg-accent-purple/10 text-accent-purple border border-accent-purple/20">
+                    Konu
+                </span>
+                <div class="flex items-center gap-2 text-xs text-text-muted">
+                    <span class="material-symbols-outlined text-sm">schedule</span>
+                    <span id="modalDate">--</span>
+                    <span>•</span>
+                    <span id="modalTime">--:--</span>
+                </div>
+            </div>
+
+            <div class="bg-white/[0.02] rounded-2xl p-6 border border-white/5">
+                <p id="modalMessageText" class="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
+                    Mesaj içeriği yükleniyor...
+                </p>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-between p-6 border-t border-white/5 bg-white/[0.01]">
+            <div class="flex items-center gap-2 text-xs text-green-400">
+                <span class="material-symbols-outlined text-sm">check_circle</span>
+                <span>Okundu olarak işaretlendi</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a id="modalDeleteBtn" href="#" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all text-sm font-medium">
+                    <span class="material-symbols-outlined text-lg">delete</span>
+                    Sil
+                </a>
+                <button onclick="closeModal()" class="flex items-center gap-2 px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium">
+                    Kapat
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public string GetSubjectBadgeClass(string? subject)
+    {
+        return subject switch
+        {
+            "İş Teklifi" => "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
+            "Web / API Geliştirme" => "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+            "Eğitim / Kurumsal Talep" => "bg-amber-500/10 text-amber-400 border border-amber-500/20",
+            _ => "bg-white/10 text-gray-400 border border-white/10"
+        };
+    }
+}
+
+<style>
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .filter-btn {
+        background: rgba(255, 255, 255, 0.03);
+        color: #888;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, rgba(91, 43, 238, 0.2), rgba(59, 130, 246, 0.2));
+            color: #fff;
+            border-color: rgba(91, 43, 238, 0.3);
+        }
+
+    .message-item {
+        transition: all 0.3s ease;
+    }
+
+        .message-item.unread {
+            background: rgba(91, 43, 238, 0.02);
+        }
+
+        .message-item:hover {
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+
+    .delay-1000 {
+        animation-delay: 1000ms;
+    }
+</style>
+
+<script>
+    // Message row click handler
+    document.querySelectorAll('.message-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const id = this.dataset.id;
+            openMessage(id);
+        });
+    });
+
+    // Open message modal
+    function openMessage(id) {
+        fetch(`/Message/GetMessageDetails/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('modalAvatar').textContent = data.senderName.charAt(0).toUpperCase();
+                document.getElementById('modalSenderName').textContent = data.senderName;
+                document.getElementById('modalSenderEmail').textContent = data.senderEmail;
+                document.getElementById('modalSubject').textContent = data.subject;
+                document.getElementById('modalDate').textContent = data.sendDate;
+                document.getElementById('modalTime').textContent = data.sendTime;
+                document.getElementById('modalMessageText').textContent = data.messageText;
+                document.getElementById('modalDeleteBtn').href = `/Message/DeleteMessage/${data.messageId}`;
+
+                // Update subject badge color
+                const subjectEl = document.getElementById('modalSubject');
+                subjectEl.className = 'px-3 py-1 rounded-full text-xs font-medium ' + getSubjectClass(data.subject);
+
+                // Mark as read in UI
+                const messageRow = document.querySelector(`.message-item[data-id="${id}"]`);
+                if (messageRow) {
+                    messageRow.classList.remove('unread');
+                    messageRow.classList.add('read');
+                    const indicator = messageRow.querySelector('.absolute.left-0');
+                    if (indicator) indicator.remove();
+                }
+
+                // Update unread count
+                updateUnreadCount();
+
+                document.getElementById('messageModal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function getSubjectClass(subject) {
+        switch(subject) {
+            case 'İş Teklifi':
+                return 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20';
+            case 'Web / API Geliştirme':
+                return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
+            case 'Eğitim / Kurumsal Talep':
+                return 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
+            default:
+                return 'bg-white/10 text-gray-400 border border-white/10';
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('messageModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    function updateUnreadCount() {
+        const unreadCount = document.querySelectorAll('.message-item.unread').length;
+        const badge = document.querySelector('.text-red-400 span:last-child');
+        if (badge) {
+            badge.textContent = unreadCount + ' Okunmamış';
+        }
+    }
+
+    // Filter functionality
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const filter = this.dataset.filter;
+            document.querySelectorAll('.message-item').forEach(item => {
+                if (filter === 'all') {
+                    item.style.display = 'block';
+                } else if (filter === 'unread') {
+                    item.style.display = item.classList.contains('unread') ? 'block' : 'none';
+                } else if (filter === 'read') {
+                    item.style.display = item.classList.contains('read') ? 'block' : 'none';
+                }
+            });
+        });
+    });
+
+    // Delete confirmation with SweetAlert
+    document.addEventListener("DOMContentLoaded", function() {
+        const deleteValue = '@TempData["Delete"]';
+        if (deleteValue) {
+            Swal.fire({
+                title: deleteValue,
+                icon: 'success',
+                confirmButtonText: 'Tamam',
+                background: '#151022',
+                color: '#ffffff',
+                confirmButtonColor: '#5b2bee'
+            });
+        }
+    });
+
+    // Close modal on escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>
