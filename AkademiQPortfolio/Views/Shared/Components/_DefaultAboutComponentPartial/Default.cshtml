@@ -1,0 +1,43 @@
+﻿@model List<About>
+
+
+<section id="section2">
+	<div class="container">
+		<h2>Hakkımda</h2>
+
+		@foreach (var item in Model)
+		{
+
+			<div class="row">
+				<div class="col-sm-3">
+					<img src="@item.ImageUrl" alt="man" class="img-responsive section-img">
+				</div> <!-- end .col-sm-3 -->
+				<div class="col-sm-9">
+					<h3 class="small-margin-bottom">@item.NameSurname</h3>
+					<h5>@item.Title</h5>
+					<p> @item.Description </p>
+
+					<ul class="list-unstyled text-uppercase">
+						<li><b>Doğum Tarihi:</b> 16 Mayıs 2003</li>
+						<li><b>Telefon:</b> @item.Phone</li>
+						<li><b>Email:</b> @item.Email</li>
+						<li><b>Adres:</b> @item.Address</li>
+						<li><b>Github:</b>https://github.com/RogLuin</li>
+					</ul> <!-- end .list-unstyled -->
+					<div class="spacer"></div>
+					<h3>Ne İş Yapıyorum?</h3>
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="service">
+								<div class="icon"><i class="ion-monitor"></i></div>
+								<h5>@item.Title</h5>
+							</div> <!-- end .service -->
+						</div> <!-- end .col-sm-4 -->
+
+					</div> <!-- end .row -->
+				</div> <!-- end .col-sm-9 -->
+			</div>
+		}
+		<!-- end .row -->
+	</div> <!-- end .container -->
+</section>
