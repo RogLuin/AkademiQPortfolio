@@ -8,7 +8,7 @@ namespace AkademiQPortfolio.ViewComponents
         public IViewComponentResult Invoke()
         {
             var model = new Message();
-            return View(model);
+            return View();
         }
     }
 }

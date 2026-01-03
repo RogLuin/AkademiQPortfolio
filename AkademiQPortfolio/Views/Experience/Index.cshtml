@@ -1,0 +1,581 @@
+﻿@model List<Experience>
+@{
+    ViewData["Title"] = "Deneyimler";
+    Layout = "~/Views/Admin/Index.cshtml";
+    int count = 0;
+}
+
+<style>
+    /* ═══════════════════════════════════════════════════════════════
+           MODERN EXPERIENCE LISTING - Premium Dark Theme
+        ═══════════════════════════════════════════════════════════════ */
+
+    #section-deneyimler {
+        padding: 2rem;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+        /* Animated Background Elements */
+        #section-deneyimler::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.06) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(98, 0, 234, 0.05) 0%, transparent 40%);
+            animation: floatBackground 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+    @@keyframes floatBackground {
+        0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+
+        33% {
+            transform: translate(2%, 2%) rotate(1deg);
+        }
+
+        66% {
+            transform: translate(-1%, 1%) rotate(-1deg);
+        }
+    }
+
+    /* Section Header */
+    .section-header {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 2rem;
+    }
+
+        .section-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+            .section-header h1 i {
+                background: linear-gradient(135deg, #a78bfa, #818cf8);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 2rem;
+            }
+
+        .section-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+    /* Stats Cards */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(167, 139, 250, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #fff;
+    }
+
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #a78bfa, #818cf8);
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #34d399, #10b981);
+        }
+
+    .stat-info h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #fff;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .stat-info p {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+    }
+
+    /* Premium Toolbar */
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 14px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(167, 139, 250, 0.4);
+    }
+
+        .btn-add:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(167, 139, 250, 0.5);
+        }
+
+        .btn-add i {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-add:hover i {
+            transform: rotate(90deg);
+        }
+
+    /* Premium Table Container */
+    .table-container {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        overflow: hidden;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+        .table-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.5), transparent);
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+        thead th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+    tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba(167, 139, 250, 0.05);
+        }
+
+    tbody td {
+        padding: 1.25rem 1.5rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 0.95rem;
+        vertical-align: middle;
+    }
+
+        /* ID Badge */
+        tbody td:first-child {
+            font-weight: 700;
+            color: #a78bfa;
+        }
+
+    .id-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: rgba(167, 139, 250, 0.15);
+        border-radius: 10px;
+        font-weight: 700;
+        color: #a78bfa;
+        font-size: 0.9rem;
+    }
+
+    /* Position Title */
+    .position-title {
+        font-weight: 600;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .position-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #a78bfa, #818cf8);
+            border-radius: 50%;
+        }
+
+    /* Company Badge */
+    .company-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(96, 165, 250, 0.1);
+        border: 1px solid rgba(96, 165, 250, 0.2);
+        border-radius: 20px;
+        color: #60a5fa;
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+
+        .company-badge i {
+            font-size: 0.75rem;
+        }
+
+    /* Description */
+    .description-text {
+        color: rgba(255, 255, 255, 0.6);
+        max-width: 300px;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Date Badge */
+    .date-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(52, 211, 153, 0.1);
+        border: 1px solid rgba(52, 211, 153, 0.2);
+        border-radius: 20px;
+        color: #34d399;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+
+        .date-badge i {
+            font-size: 0.75rem;
+        }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-sm {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.1rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-edit {
+        background: rgba(251, 191, 36, 0.15);
+        color: #fbbf24;
+        border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+        .btn-edit:hover {
+            background: rgba(251, 191, 36, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
+        }
+
+    .btn-delete {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.2);
+        }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: rgba(167, 139, 250, 0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+    /* Responsive Design */
+    @@media (max-width: 1024px) {
+        .stats-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 768px) {
+        #section-deneyimler {
+            padding: 1rem;
+        }
+
+        .section-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+
+        .table-container {
+            border-radius: 16px;
+        }
+
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+
+            thead tr {
+                display: none;
+            }
+
+            tbody tr {
+                padding: 1rem;
+                margin-bottom: 1rem;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+            tbody td {
+                padding: 0.75rem 1rem;
+                text-align: left;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+                tbody td::before {
+                    content: attr(data-label);
+                    font-weight: 600;
+                    color: rgba(255, 255, 255, 0.5);
+                    font-size: 0.8rem;
+                    text-transform: uppercase;
+                }
+
+                tbody td:last-child {
+                    border-bottom: none;
+                }
+
+        .action-buttons {
+            width: 100%;
+            justify-content: flex-end;
+        }
+    }
+</style>
+
+<div id="section-deneyimler" class="page-section">
+    <!-- Section Header -->
+    <div class="section-header">
+        <h1>
+            <i class="fa-solid fa-briefcase"></i>
+            Deneyimler
+        </h1>
+        <p>İş deneyimlerinizi ve kariyer geçmişinizi yönetin</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <div class="stat-info">
+                <h3>@Model.Count</h3>
+                <p>Toplam Deneyim</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="fa-solid fa-building"></i>
+            </div>
+            <div class="stat-info">
+                <h3>@Model.Select(x => x.CompanyName).Distinct().Count()</h3>
+                <p>Farklı Firma</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Aktif</h3>
+                <p>Profil Durumu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <a href="/Experience/CreateExperience" class="btn btn-add">
+            <i class="fa-solid fa-plus"></i> Yeni Deneyim Ekle
+        </a>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+        @if (Model.Count > 0)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 70px;">No</th>
+                        <th>Pozisyon</th>
+                        <th>Firma</th>
+                        <th>Açıklama</th>
+                        <th>Tarih</th>
+                        <th style="width: 200px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        count++;
+                        <tr>
+                            <td data-label="No">
+                                <span class="id-badge">@count</span>
+                            </td>
+                            <td data-label="Pozisyon">
+                                <span class="position-title">@item.Title</span>
+                            </td>
+                            <td data-label="Firma">
+                                <span class="company-badge">
+                                    <i class="fa-solid fa-building"></i>
+                                    @item.CompanyName
+                                </span>
+                            </td>
+                            <td data-label="Açıklama">
+                                <span class="description-text">@item.Description</span>
+                            </td>
+                            <td data-label="Tarih">
+                                <span class="date-badge">
+                                    <i class="fa-regular fa-calendar"></i>
+                                    @item.WorkDate
+                                </span>
+                            </td>
+                            <td data-label="İşlemler">
+                                <div class="action-buttons">
+                                    <a href="/Experience/UpdateExperience/@item.ExperianceId"
+                                       class="btn btn-sm btn-edit">
+                                        <i class="fa-solid fa-pen"></i> Güncelle
+                                    </a>
+                                    <a href="/Experience/DeleteExperience/@item.ExperianceId"
+                                       class="btn btn-sm btn-delete"
+                                       onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?')">
+                                        <i class="fa-solid fa-trash"></i> Sil
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fa-solid fa-briefcase"></i>
+                <h3>Henüz deneyim eklenmemiş</h3>
+                <p>Yeni bir deneyim ekleyerek başlayın</p>
+            </div>
+        }
+    </div>
+</div>
