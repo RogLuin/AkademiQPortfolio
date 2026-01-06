@@ -3,14 +3,14 @@
 }
 
 <nav class="flex flex-col gap-2">
-    <a class="flex items-center gap-3 rounded-full px-4 py-3 transition-all @(currentController == "Statistics" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50")"
-       href="/Statistics/StatisticsCards/">
+    <a class="flex items-center gap-3 rounded-full px-4 py-3 transition-all @(currentController == "StatisticsController1" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50")"
+       href="/StatisticsController1/StatisticsCard">
         <span class="material-symbols-outlined @(currentController == "Statistics" ? "icon-fill" : "")">dashboard</span>
         <span class="text-sm font-semibold">Dashboard</span>
     </a>
 
-    <a class="group flex items-center gap-3 rounded-full px-4 py-3 transition-colors @(currentController == "Projects" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50")"
-       href="/Projects/ProjectList/">
+    <a class="group flex items-center gap-3 rounded-full px-4 py-3 transition-colors @(currentController == "Work" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50")"
+       href="/Work/index">
         <span class="material-symbols-outlined @(currentController == "Projects" ? "text-white" : "group-hover:text-primary")">folder_open</span>
         <span class="text-sm font-medium @(currentController == "Projects" ? "text-white" : "group-hover:text-slate-900 dark:group-hover:text-white")">Projelerim</span>
     </a>
@@ -27,8 +27,8 @@
         <span class="text-sm font-medium @(currentController == "Experience" ? "text-white" : "group-hover:text-slate-900 dark:group-hover:text-white")">Deneyimler</span>
     </a>
 
-    <a class="group flex items-center gap-3 rounded-full px-4 py-3 transition-colors @(currentController == "Contact" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50")"
-       href="/Message/CreateMessage">
+    <a class="group flex items-center gap-3 rounded-full px-4 py-3 transition-colors @(currentController == "Message" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50")"
+       href="/Message/index">
         <span class="material-symbols-outlined @(currentController == "Contact" ? "text-white" : "group-hover:text-primary")">mail</span>
         <span class="text-sm font-medium @(currentController == "Contact" ? "text-white" : "group-hover:text-slate-900 dark:group-hover:text-white")">Mesajlar</span>
 
@@ -41,17 +41,5 @@
        href="/Education/index/">
         <span class="material-symbols-outlined @(currentController == "Education" ? "text-white" : "group-hover:text-primary")">school</span>
         <span class="text-sm font-medium @(currentController == "Education" ? "text-white" : "group-hover:text-slate-900 dark:group-hover:text-white")">Eğitim</span>
-    </a>
-
-    <a class="group flex items-center gap-3 rounded-full px-4 py-3 transition-colors @(currentController == "Reference" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50")"
-       href="/Testimonial/TestimonialList/">
-        <span class="material-symbols-outlined @(currentController == "Reference" ? "text-white" : "group-hover:text-primary")">star</span>
-        <span class="text-sm font-medium @(currentController == "Reference" ? "text-white" : "group-hover:text-slate-900 dark:group-hover:text-white")">Referanslar</span>
-    </a>
-
-    <a class="group flex items-center gap-3 rounded-full px-4 py-3 transition-colors @(currentController == "About" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800/50")"
-       href="/About/Index/">
-        <span class="material-symbols-outlined @(currentController == "About" ? "text-white" : "group-hover:text-primary")">person</span>
-        <span class="text-sm font-medium @(currentController == "About" ? "text-white" : "group-hover:text-slate-900 dark:group-hover:text-white")">Hakkımda</span>
     </a>
 </nav>

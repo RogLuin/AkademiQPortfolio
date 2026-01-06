@@ -1,74 +1,417 @@
 ﻿@model Skill
 @{
-    ViewData["Title"] = "UpdateSkill";
+    ViewData["Title"] = "Yetenek Güncelle";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+<style>
+    /* Base Container */
+    .update-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0a0a12 0%, #12121e 50%, #0d1117 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        position: relative;
+        overflow: hidden;
+    }
 
-<script src="https://cdn.tailwindcss.com"></script>
+    /* Ambient Glow */
+    .ambient-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+    }
 
-<div class="p-6 bg-gray-50 min-h-screen flex items-center justify-center">
-    <div class="max-w-2xl w-full">
+    .glow-1 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+        top: -10%;
+        left: -10%;
+        animation: pulse-glow 8s ease-in-out infinite;
+    }
 
-        <div class="mb-6">
-            <a href="/Skill/Index/" class="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600 transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Listeye Geri Dön
-            </a>
-        </div>
+    .glow-2 {
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        bottom: -10%;
+        right: -10%;
+        animation: pulse-glow 10s ease-in-out infinite;
+        animation-delay: 3s;
+    }
 
-        <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
-            <div class="p-8">
-                <div class="mb-8">
-                    <h1 class="text-2xl font-extrabold text-gray-800 tracking-tight">Yetenek Güncelleme Sayfası</h1>
-                    <p class="text-gray-500 mt-2 text-sm">Portfolyonuzda sergilenecek yeni bir yetenek tanımlayın.</p>
+    @@keyframes pulse-glow {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Form Card */
+    .form-wrapper {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 560px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+        text-decoration: none;
+        margin-bottom: 24px;
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        color: #f59e0b;
+        transform: translateX(-4px);
+    }
+
+    .form-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        position: relative;
+    }
+
+    .form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #6366f1);
+    }
+
+    .form-body {
+        padding: 40px;
+        position: relative;
+    }
+
+    .form-header {
+        margin-bottom: 36px;
+        text-align: center;
+    }
+
+    .form-icon {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 20px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(99, 102, 241, 0.2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        color: #fcd34d;
+        box-shadow: 0 12px 30px rgba(245, 158, 11, 0.2);
+    }
+
+    .form-header h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 8px 0;
+        letter-spacing: -0.02em;
+    }
+
+    .form-header p {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+    }
+
+    /* Skill Badge */
+    .skill-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        border-radius: 10px;
+        font-size: 0.8rem;
+        color: #a5b4fc;
+        margin-top: 12px;
+    }
+
+    /* Form Fields */
+    .form-group {
+        margin-bottom: 28px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 10px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.3);
+        transition: color 0.3s ease;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 16px 20px 16px 52px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        color: white;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .form-input:focus {
+        border-color: #f59e0b;
+        background: rgba(245, 158, 11, 0.08);
+        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+    }
+
+    .form-input:focus + .input-icon,
+    .input-wrapper:focus-within .input-icon {
+        color: #f59e0b;
+    }
+
+    /* Range Slider */
+    .range-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    .range-value {
+        padding: 6px 14px;
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(99, 102, 241, 0.2));
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #fcd34d;
+    }
+
+    .range-slider {
+        width: 100%;
+        height: 8px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        outline: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f59e0b, #6366f1);
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        transition: transform 0.2s ease;
+    }
+
+    .range-slider::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+    }
+
+    .range-slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f59e0b, #6366f1);
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    }
+
+    .range-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .range-labels span {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 18px 32px;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        border: none;
+        border-radius: 14px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        margin-top: 12px;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .submit-btn i {
+        font-size: 1.1rem;
+    }
+
+    /* Footer Info */
+    .form-footer {
+        padding: 20px 40px;
+        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .form-footer i {
+        color: #6366f1;
+        font-size: 1.1rem;
+    }
+
+    .form-footer p {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 0;
+    }
+
+    /* Responsive */
+    @@media (max-width: 576px) {
+        .form-body {
+            padding: 28px;
+        }
+
+        .form-footer {
+            padding: 16px 28px;
+        }
+    }
+</style>
+
+<main class="update-container">
+    <!-- Ambient Glow -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <div class="form-wrapper">
+        <!-- Back Link -->
+        <a href="/Skill/SkillList/" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Listeye Geri Dön
+        </a>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <div class="form-body">
+                <div class="form-header">
+                    <div class="form-icon">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </div>
+                    <h1>Yetenek Güncelle</h1>
+                    <p>Mevcut yeteneğinizi düzenleyin</p>
+                    <div class="skill-badge">
+                        <i class="fa-solid fa-hashtag"></i>
+                        ID: @Model.SkillId
+                    </div>
                 </div>
 
-                <form method="post" class="space-y-6">
+                <form method="post">
                     <input type="hidden" asp-for="SkillId" />
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Yetenek Adı</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            </div>
-                            <input type="text" asp-for="Skilltitle"
-                                   class="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-50/50 transition-all outline-none text-gray-700 placeholder-gray-400"
+
+                    <div class="form-group">
+                        <label class="form-label">Yetenek Adı</label>
+                        <div class="input-wrapper">
+                            <input type="text" asp-for="Skilltitle" class="form-input"
                                    placeholder="Örn: C#, React, UI Design" required />
+                            <i class="fa-solid fa-code input-icon"></i>
                         </div>
                     </div>
 
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="block text-sm font-semibold text-gray-700">Yetenek Seviyesi (%)</label>
-                            <span id="rangeValue" class="px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-full">50%</span>
+                    <div class="form-group">
+                        <div class="range-header">
+                            <label class="form-label" style="margin-bottom: 0;">Yetenek Seviyesi</label>
+                            <span id="rangeValue" class="range-value">@(Model.SkillValue ?? 50)%</span>
                         </div>
-                        <input type="range" asp-for="SkillValue" min="0" max="100" value="50"
+                        <input type="range" asp-for="SkillValue" min="0" max="100"
                                oninput="document.getElementById('rangeValue').innerText = this.value + '%'"
-                               class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
-                        <div class="flex justify-between text-[10px] text-gray-400 mt-2 uppercase font-medium">
+                               class="range-slider" />
+                        <div class="range-labels">
                             <span>Başlangıç</span>
+                            <span>Orta</span>
                             <span>Uzman</span>
                         </div>
                     </div>
 
-                    <div class="pt-4">
-                        <button type="submit" class="w-full inline-flex justify-center items-center px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-100 transform active:scale-[0.98]">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            Yeteneği Kaydet
-                        </button>
-                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fa-solid fa-save"></i>
+                        Değişiklikleri Kaydet
+                    </button>
                 </form>
             </div>
 
-            <div class="bg-gray-50 px-8 py-4 border-t border-gray-100">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-indigo-400 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                    <p class="text-xs text-gray-500">Bu yetenek kaydedildikten sonra otomatik olarak listeleme sayfasında görünecektir.</p>
-                </div>
+            <div class="form-footer">
+                <i class="fa-solid fa-circle-info"></i>
+                <p>Değişiklikler kaydedildikten sonra hemen yansıtılacaktır.</p>
             </div>
         </div>
-
     </div>
-</div>
+</main>
+
+<script>
+    // Set initial range value display
+    document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.querySelector('.range-slider');
+        const display = document.getElementById('rangeValue');
+        if (slider && display) {
+            display.innerText = slider.value + '%';
+        }
+    });
+</script>

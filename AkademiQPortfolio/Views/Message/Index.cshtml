@@ -4,270 +4,857 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<main class="flex-1 flex flex-col h-full overflow-hidden relative bg-background-dark">
-    <!-- Animated background effects -->
-    <div class="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
-    <div class="absolute bottom-[-15%] right-[-5%] w-[300px] h-[300px] bg-accent-blue/5 rounded-full blur-[100px] pointer-events-none animate-pulse delay-1000"></div>
-
-    <header class="flex items-center justify-between px-8 py-6 z-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
-        <div class="flex items-center gap-4">
-            <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-purple/20 to-accent-blue/20 flex items-center justify-center shadow-lg shadow-accent-purple/10">
-                <span class="material-symbols-outlined text-accent-purple text-2xl">inbox</span>
-            </div>
-            <div>
-                <h2 class="text-2xl font-bold text-white tracking-tight">Gelen Kutusu</h2>
-                <p class="text-text-muted text-sm mt-0.5">Portfolyonuza gelen mesajları yönetin.</p>
-            </div>
-        </div>
-        <div class="flex items-center gap-3">
-            <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent-purple/10 border border-accent-purple/20 text-xs text-accent-purple font-medium">
-                <span class="material-symbols-outlined text-sm">mail</span>
-                <span>@Model.Count() Mesaj</span>
-            </div>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-400 font-medium">
-                <span class="size-2 rounded-full bg-red-400 animate-pulse"></span>
-                <span>@Model.Count(x => x.IsRead == false) Okunmamış</span>
-            </div>
-        </div>
-    </header>
-
-    <div class="flex-1 overflow-y-auto p-8 pt-6 pb-20 scroll-smooth relative z-0">
-        <div class="max-w-6xl mx-auto space-y-6">
-
-            <!-- Filter Tabs -->
-            <div class="flex items-center gap-2 mb-6" style="animation: fadeInUp 0.4s ease-out;">
-                <button class="filter-btn active flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all" data-filter="all">
-                    <span class="material-symbols-outlined text-lg">all_inbox</span>
-                    Tümü
-                </button>
-                <button class="filter-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all" data-filter="unread">
-                    <span class="material-symbols-outlined text-lg">mark_email_unread</span>
-                    Okunmamış
-                </button>
-                <button class="filter-btn flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all" data-filter="read">
-                    <span class="material-symbols-outlined text-lg">drafts</span>
-                    Okunmuş
-                </button>
-            </div>
-
-            <!-- Messages List -->
-            <div class="bg-card-dark/80 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden" style="animation: fadeInUp 0.5s ease-out 0.1s both;">
-                <div class="divide-y divide-white/5">
-                    @{
-                        var index = 0;
-                    }
-                    @foreach (var item in Model)
-                    {
-                        var isUnread = item.IsRead == false;
-                        <div class="message-item group relative hover:bg-white/[0.02] transition-all duration-300 cursor-pointer @(isUnread ? "unread bg-accent-purple/[0.02]" : "read")"
-                             data-id="@item.MessageId"
-                             style="animation: fadeInUp 0.4s ease-out @(index * 0.05)s both;">
-
-                            @if (isUnread)
-                            {
-                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-accent-purple"></div>
-                            }
-
-                            <div class="flex items-center gap-4 p-5 pl-6">
-                                <!-- Avatar -->
-                                <div class="relative flex-shrink-0">
-                                    <div class="size-12 rounded-2xl bg-gradient-to-br @(isUnread ? "from-accent-purple to-accent-blue" : "from-white/10 to-white/5") flex items-center justify-center text-@(isUnread ? "white" : "gray-400") font-bold text-lg shadow-lg @(isUnread ? "shadow-accent-purple/20" : "")">
-                                        @item.SenderName?.Substring(0, 1).ToUpper()
-                                    </div>
-                                    @if (isUnread)
-                                    {
-                                        <div class="absolute -top-1 -right-1 size-4 rounded-full bg-accent-purple border-2 border-background-dark flex items-center justify-center">
-                                            <span class="size-2 rounded-full bg-white"></span>
-                                        </div>
-                                    }
-                                </div>
-
-                                <!-- Content -->
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center gap-3 mb-1">
-                                        <h4 class="text-white font-semibold truncate @(isUnread ? "text-white" : "text-gray-300")">@item.SenderName</h4>
-                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-medium @GetSubjectBadgeClass(item.MessageSubject)">
-                                            @item.MessageSubject
-                                        </span>
-                                    </div>
-                                    <p class="text-sm text-text-muted truncate mb-1">@item.SenderEmail</p>
-                                    <p class="text-xs text-gray-500 truncate max-w-xl">
-                                        @(item.MessageText?.Length > 80 ? item.MessageText.Substring(0, 80) + "..." : item.MessageText)
-                                    </p>
-                                </div>
-
-                                <!-- Meta & Actions -->
-                                <div class="flex items-center gap-4 flex-shrink-0">
-                                    <div class="text-right">
-                                        <p class="text-xs text-gray-400 mb-1">
-                                            @(item.SendDate.HasValue ? item.SendDate.Value.ToString("dd MMM") : "")
-                                        </p>
-                                        <p class="text-[10px] text-gray-500">
-                                            @(item.SendDate.HasValue ? item.SendDate.Value.ToString("HH:mm") : "")
-                                        </p>
-                                    </div>
-                                    <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button onclick="event.stopPropagation(); openMessage(@item.MessageId)" class="p-2 rounded-xl bg-accent-blue/10 text-accent-blue hover:bg-accent-blue/20 transition-all" title="Görüntüle">
-                                            <span class="material-symbols-outlined text-lg">visibility</span>
-                                        </button>
-                                        <a href="/Message/DeleteMessage/@item.MessageId" onclick="event.stopPropagation();" class="p-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all" title="Sil">
-                                            <span class="material-symbols-outlined text-lg">delete</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        index++;
-                    }
-                </div>
-
-                @if (!Model.Any())
-                {
-                    <div class="p-16 text-center">
-                        <div class="size-24 mx-auto rounded-full bg-white/5 flex items-center justify-center mb-6">
-                            <span class="material-symbols-outlined text-5xl text-text-muted">inbox</span>
-                        </div>
-                        <h4 class="text-xl text-white font-semibold mb-2">Henüz mesaj yok</h4>
-                        <p class="text-text-muted text-sm">Portfolyonuza gelen mesajlar burada görünecek.</p>
-                    </div>
-                }
-            </div>
-
-        </div>
-    </div>
-</main>
-
-<!-- Message Detail Modal -->
-<div id="messageModal" class="fixed inset-0 z-50 hidden">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl bg-card-dark rounded-3xl border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-
-        <!-- Modal Header -->
-        <div class="flex items-center justify-between p-6 border-b border-white/5 bg-white/[0.02]">
-            <div class="flex items-center gap-4">
-                <div id="modalAvatar" class="size-14 rounded-2xl bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-accent-purple/20">
-                    ?
-                </div>
-                <div>
-                    <h3 id="modalSenderName" class="text-lg font-bold text-white">Gönderen</h3>
-                    <p id="modalSenderEmail" class="text-sm text-text-muted">email@example.com</p>
-                </div>
-            </div>
-            <button onclick="closeModal()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-        </div>
-
-        <!-- Modal Body -->
-        <div class="flex-1 overflow-y-auto p-6">
-            <div class="flex items-center gap-3 mb-6">
-                <span id="modalSubject" class="px-3 py-1 rounded-full text-xs font-medium bg-accent-purple/10 text-accent-purple border border-accent-purple/20">
-                    Konu
-                </span>
-                <div class="flex items-center gap-2 text-xs text-text-muted">
-                    <span class="material-symbols-outlined text-sm">schedule</span>
-                    <span id="modalDate">--</span>
-                    <span>•</span>
-                    <span id="modalTime">--:--</span>
-                </div>
-            </div>
-
-            <div class="bg-white/[0.02] rounded-2xl p-6 border border-white/5">
-                <p id="modalMessageText" class="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
-                    Mesaj içeriği yükleniyor...
-                </p>
-            </div>
-        </div>
-
-        <!-- Modal Footer -->
-        <div class="flex items-center justify-between p-6 border-t border-white/5 bg-white/[0.01]">
-            <div class="flex items-center gap-2 text-xs text-green-400">
-                <span class="material-symbols-outlined text-sm">check_circle</span>
-                <span>Okundu olarak işaretlendi</span>
-            </div>
-            <div class="flex items-center gap-3">
-                <a id="modalDeleteBtn" href="#" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all text-sm font-medium">
-                    <span class="material-symbols-outlined text-lg">delete</span>
-                    Sil
-                </a>
-                <button onclick="closeModal()" class="flex items-center gap-2 px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium">
-                    Kapat
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@functions {
-    public string GetSubjectBadgeClass(string? subject)
-    {
-        return subject switch
-        {
-            "İş Teklifi" => "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
-            "Web / API Geliştirme" => "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-            "Eğitim / Kurumsal Talep" => "bg-amber-500/10 text-amber-400 border border-amber-500/20",
-            _ => "bg-white/10 text-gray-400 border border-white/10"
-        };
-    }
-}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
+    /* Base Container */
+    .inbox-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0a0a12 0%, #12121e 50%, #0d1117 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Ambient Glow */
+    .ambient-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .glow-1 {
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        top: -15%;
+        left: -10%;
+        animation: pulse-glow 8s ease-in-out infinite;
+    }
+
+    .glow-2 {
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+        bottom: -10%;
+        right: -5%;
+        animation: pulse-glow 10s ease-in-out infinite;
+        animation-delay: 3s;
+    }
+
+    @@keyframes pulse-glow {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Header */
+    .page-header {
+        position: relative;
+        z-index: 10;
+        padding: 32px 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(10, 10, 18, 0.8);
+        backdrop-filter: blur(20px);
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #a5b4fc;
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+    }
+
+    .header-text h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 4px 0;
+        letter-spacing: -0.02em;
+    }
+
+    .header-text p {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+    }
+
+    .header-stats {
+        display: flex;
+        gap: 12px;
+    }
+
+    .stat-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .stat-badge.total {
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        color: #a5b4fc;
+    }
+
+    .stat-badge.unread {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+    }
+
+    .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: #ef4444;
+        border-radius: 50%;
+        animation: pulse-dot 2s infinite;
+    }
+
+    @@keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+
+    /* Main Content */
+    .main-content {
+        position: relative;
+        z-index: 5;
+        padding: 32px 40px 80px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Filter Tabs */
+    .filter-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 24px;
+        animation: fadeInUp 0.4s ease-out;
+    }
+
+    .filter-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: white;
+    }
+
+    .filter-btn.active {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+        border-color: rgba(99, 102, 241, 0.3);
+        color: white;
+    }
+
+    /* Messages Card */
+    .messages-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 24px;
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease-out 0.1s both;
+    }
+
+    /* Message Item */
+    .message-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        animation: fadeInUp 0.4s ease-out forwards;
+    }
+
+    .message-item:last-child {
+        border-bottom: none;
+    }
+
+    .message-item:hover {
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .message-item.unread {
+        background: rgba(99, 102, 241, 0.03);
+    }
+
+    .message-item.unread::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #6366f1, #8b5cf6);
+    }
+
+    /* Avatar */
+    .avatar-wrapper {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .avatar.unread {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    }
+
+    .avatar.read {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .unread-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 16px;
+        height: 16px;
+        background: #6366f1;
+        border: 3px solid #0a0a12;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .unread-badge::after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: white;
+        border-radius: 50%;
+    }
+
+    /* Message Content */
+    .message-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .message-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+    }
+
+    .sender-name {
+        font-size: 1rem;
+        font-weight: 600;
+        color: white;
+        margin: 0;
+    }
+
+    .message-item.read .sender-name {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .subject-badge {
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .subject-badge.job {
+        background: rgba(99, 102, 241, 0.15);
+        color: #a5b4fc;
+        border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+
+    .subject-badge.dev {
+        background: rgba(16, 185, 129, 0.15);
+        color: #6ee7b7;
+        border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .subject-badge.edu {
+        background: rgba(245, 158, 11, 0.15);
+        color: #fcd34d;
+        border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .subject-badge.other {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sender-email {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 0 0 4px 0;
+    }
+
+    .message-preview {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.35);
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 500px;
+    }
+
+    /* Message Meta */
+    .message-meta {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-shrink: 0;
+    }
+
+    .message-time {
+        text-align: right;
+    }
+
+    .message-time .date {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 2px;
+    }
+
+    .message-time .time {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Action Buttons */
+    .action-btns {
+        display: flex;
+        gap: 8px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .message-item:hover .action-btns {
+        opacity: 1;
+    }
+
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
+
+    .action-btn.view {
+        background: rgba(59, 130, 246, 0.1);
+        color: #60a5fa;
+    }
+
+    .action-btn.view:hover {
+        background: rgba(59, 130, 246, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .action-btn.delete {
+        background: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+    }
+
+    .action-btn.delete:hover {
+        background: rgba(239, 68, 68, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* Empty State */
+    .empty-state {
+        padding: 80px 40px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 24px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .empty-state h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: white;
+        margin: 0 0 8px 0;
+    }
+
+    .empty-state p {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 0;
+    }
+
+    /* Modal */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-overlay.active {
+        display: flex;
+    }
+
+    .modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+    }
+
+    .modal-container {
+        position: relative;
+        width: 100%;
+        max-width: 640px;
+        max-height: 90vh;
+        background: linear-gradient(135deg, #151525 0%, #1a1a2e 100%);
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        animation: modal-enter 0.3s ease;
+    }
+
+    @@keyframes modal-enter {
+        from {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .modal-header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .modal-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: white;
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    }
+
+    .modal-sender-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: white;
+        margin: 0 0 4px 0;
+    }
+
+    .modal-sender-email {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+    }
+
+    .modal-close {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        font-size: 1.1rem;
+    }
+
+    .modal-close:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 28px;
+    }
+
+    .modal-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .modal-date {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .modal-message-box {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 24px;
+    }
+
+    .modal-message-text {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0;
+        white-space: pre-wrap;
+    }
+
+    .modal-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 28px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.01);
+    }
+
+    .read-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        color: #10b981;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    .modal-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .modal-btn.secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .modal-btn.secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    .modal-btn.danger {
+        background: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+    }
+
+    .modal-btn.danger:hover {
+        background: rgba(239, 68, 68, 0.2);
+    }
+
+    /* Animations */
     @@keyframes fadeInUp {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(15px);
         }
-
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
 
-    .filter-btn {
-        background: rgba(255, 255, 255, 0.03);
-        color: #888;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-        .filter-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(135deg, rgba(91, 43, 238, 0.2), rgba(59, 130, 246, 0.2));
-            color: #fff;
-            border-color: rgba(91, 43, 238, 0.3);
-        }
-
-    .message-item {
-        transition: all 0.3s ease;
-    }
-
-        .message-item.unread {
-            background: rgba(91, 43, 238, 0.02);
-        }
-
-        .message-item:hover {
-            background: rgba(255, 255, 255, 0.03) !important;
-        }
-
-    .delay-1000 {
-        animation-delay: 1000ms;
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .page-header { padding: 24px; }
+        .header-content { flex-direction: column; gap: 16px; align-items: flex-start; }
+        .main-content { padding: 24px; }
+        .message-item { padding: 16px 20px; flex-wrap: wrap; }
+        .message-preview { max-width: 100%; }
+        .action-btns { opacity: 1; }
     }
 </style>
 
-<script>
-    // Message row click handler
-    document.querySelectorAll('.message-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const id = this.dataset.id;
-            openMessage(id);
-        });
-    });
+<main class="inbox-container">
+    <!-- Ambient Glow -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
 
-    // Open message modal
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-icon">
+                    <i class="fa-regular fa-envelope"></i>
+                </div>
+                <div class="header-text">
+                    <h1>Gelen Kutusu</h1>
+                    <p>Portfolyonuza gelen mesajları yönetin</p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-badge total">
+                    <i class="fa-regular fa-envelope"></i>
+                    @Model.Count() Mesaj
+                </div>
+                <div class="stat-badge unread">
+                    <span class="pulse-dot"></span>
+                    @Model.Count(x => x.IsRead == false) Okunmamış
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">
+                <i class="fa-solid fa-inbox"></i>
+                Tümü
+            </button>
+            <button class="filter-btn" data-filter="unread">
+                <i class="fa-solid fa-envelope"></i>
+                Okunmamış
+            </button>
+            <button class="filter-btn" data-filter="read">
+                <i class="fa-regular fa-envelope-open"></i>
+                Okunmuş
+            </button>
+        </div>
+
+        <!-- Messages Card -->
+        <div class="messages-card">
+            @if (Model.Any())
+            {
+                var index = 0;
+                foreach (var item in Model)
+                {
+                    var isUnread = item.IsRead == false;
+                    <div class="message-item @(isUnread ? "unread" : "read")"
+                         data-id="@item.MessageId"
+                         onclick="openMessage(@item.MessageId)"
+                         style="animation-delay: @(0.1 + index * 0.05)s;">
+
+                        <!-- Avatar -->
+                        <div class="avatar-wrapper">
+                            <div class="avatar @(isUnread ? "unread" : "read")">
+                                @item.SenderName?.Substring(0, 1).ToUpper()
+                            </div>
+                            @if (isUnread)
+                            {
+                                <div class="unread-badge"></div>
+                            }
+                        </div>
+
+                        <!-- Content -->
+                        <div class="message-content">
+                            <div class="message-header">
+                                <h4 class="sender-name">@item.SenderName</h4>
+                                <span class="subject-badge @GetSubjectClass(item.MessageSubject)">
+                                    @item.MessageSubject
+                                </span>
+                            </div>
+                            <p class="sender-email">@item.SenderEmail</p>
+                            <p class="message-preview">
+                                @(item.MessageText?.Length > 80 ? item.MessageText.Substring(0, 80) + "..." : item.MessageText)
+                            </p>
+                        </div>
+
+                        <!-- Meta -->
+                        <div class="message-meta">
+                            <div class="message-time">
+                                <div class="date">@(item.SendDate.HasValue ? item.SendDate.Value.ToString("dd MMM") : "")</div>
+                                <div class="time">@(item.SendDate.HasValue ? item.SendDate.Value.ToString("HH:mm") : "")</div>
+                            </div>
+                            <div class="action-btns">
+                                <button class="action-btn view" onclick="event.stopPropagation(); openMessage(@item.MessageId)" title="Görüntüle">
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                                <a href="/Message/DeleteMessage/@item.MessageId" class="action-btn delete" onclick="event.stopPropagation();" title="Sil">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    index++;
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <h3>Henüz mesaj yok</h3>
+                    <p>Portfolyonuza gelen mesajlar burada görünecek.</p>
+                </div>
+            }
+        </div>
+    </div>
+</main>
+
+<!-- Message Modal -->
+<div id="messageModal" class="modal-overlay">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-header-left">
+                <div class="modal-avatar" id="modalAvatar">?</div>
+                <div>
+                    <h3 class="modal-sender-name" id="modalSenderName">Gönderen</h3>
+                    <p class="modal-sender-email" id="modalSenderEmail">email@example.com</p>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-meta">
+                <span class="subject-badge job" id="modalSubject">Konu</span>
+                <div class="modal-date">
+                    <i class="fa-regular fa-clock"></i>
+                    <span id="modalDate">--</span>
+                    <span>•</span>
+                    <span id="modalTime">--:--</span>
+                </div>
+            </div>
+            <div class="modal-message-box">
+                <p class="modal-message-text" id="modalMessageText">Mesaj içeriği yükleniyor...</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="read-status">
+                <i class="fa-solid fa-circle-check"></i>
+                Okundu olarak işaretlendi
+            </div>
+            <div class="modal-actions">
+                <a href="#" class="modal-btn danger" id="modalDeleteBtn">
+                    <i class="fa-regular fa-trash-can"></i>
+                    Sil
+                </a>
+                <button class="modal-btn secondary" onclick="closeModal()">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public string GetSubjectClass(string? subject)
+    {
+        return subject switch
+        {
+            "İş Teklifi" => "job",
+            "Web / API Geliştirme" => "dev",
+            "Eğitim / Kurumsal Talep" => "edu",
+            _ => "other"
+        };
+    }
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
     function openMessage(id) {
         fetch(`/Message/GetMessageDetails/${id}`)
             .then(response => response.json())
@@ -281,23 +868,24 @@
                 document.getElementById('modalMessageText').textContent = data.messageText;
                 document.getElementById('modalDeleteBtn').href = `/Message/DeleteMessage/${data.messageId}`;
 
-                // Update subject badge color
                 const subjectEl = document.getElementById('modalSubject');
-                subjectEl.className = 'px-3 py-1 rounded-full text-xs font-medium ' + getSubjectClass(data.subject);
+                subjectEl.className = 'subject-badge ' + getSubjectClass(data.subject);
 
-                // Mark as read in UI
                 const messageRow = document.querySelector(`.message-item[data-id="${id}"]`);
-                if (messageRow) {
+                if (messageRow && messageRow.classList.contains('unread')) {
                     messageRow.classList.remove('unread');
                     messageRow.classList.add('read');
-                    const indicator = messageRow.querySelector('.absolute.left-0');
-                    if (indicator) indicator.remove();
+                    const avatar = messageRow.querySelector('.avatar');
+                    if (avatar) {
+                        avatar.classList.remove('unread');
+                        avatar.classList.add('read');
+                    }
+                    const badge = messageRow.querySelector('.unread-badge');
+                    if (badge) badge.remove();
+                    updateUnreadCount();
                 }
 
-                // Update unread count
-                updateUnreadCount();
-
-                document.getElementById('messageModal').classList.remove('hidden');
+                document.getElementById('messageModal').classList.add('active');
                 document.body.style.overflow = 'hidden';
             })
             .catch(error => console.error('Error:', error));
@@ -305,27 +893,23 @@
 
     function getSubjectClass(subject) {
         switch(subject) {
-            case 'İş Teklifi':
-                return 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20';
-            case 'Web / API Geliştirme':
-                return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-            case 'Eğitim / Kurumsal Talep':
-                return 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
-            default:
-                return 'bg-white/10 text-gray-400 border border-white/10';
+            case 'İş Teklifi': return 'job';
+            case 'Web / API Geliştirme': return 'dev';
+            case 'Eğitim / Kurumsal Talep': return 'edu';
+            default: return 'other';
         }
     }
 
     function closeModal() {
-        document.getElementById('messageModal').classList.add('hidden');
+        document.getElementById('messageModal').classList.remove('active');
         document.body.style.overflow = 'auto';
     }
 
     function updateUnreadCount() {
         const unreadCount = document.querySelectorAll('.message-item.unread').length;
-        const badge = document.querySelector('.text-red-400 span:last-child');
+        const badge = document.querySelector('.stat-badge.unread');
         if (badge) {
-            badge.textContent = unreadCount + ' Okunmamış';
+            badge.innerHTML = `<span class="pulse-dot"></span>${unreadCount} Okunmamış`;
         }
     }
 
@@ -338,35 +922,34 @@
             const filter = this.dataset.filter;
             document.querySelectorAll('.message-item').forEach(item => {
                 if (filter === 'all') {
-                    item.style.display = 'block';
+                    item.style.display = 'flex';
                 } else if (filter === 'unread') {
-                    item.style.display = item.classList.contains('unread') ? 'block' : 'none';
+                    item.style.display = item.classList.contains('unread') ? 'flex' : 'none';
                 } else if (filter === 'read') {
-                    item.style.display = item.classList.contains('read') ? 'block' : 'none';
+                    item.style.display = item.classList.contains('read') ? 'flex' : 'none';
                 }
             });
         });
     });
 
-    // Delete confirmation with SweetAlert
+    // SweetAlert for delete
     document.addEventListener("DOMContentLoaded", function() {
         const deleteValue = '@TempData["Delete"]';
         if (deleteValue) {
             Swal.fire({
-                title: deleteValue,
+                title: 'Silindi!',
+                text: deleteValue,
                 icon: 'success',
                 confirmButtonText: 'Tamam',
-                background: '#151022',
+                background: '#151525',
                 color: '#ffffff',
-                confirmButtonColor: '#5b2bee'
+                confirmButtonColor: '#6366f1'
             });
         }
     });
 
     // Close modal on escape
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
+        if (e.key === 'Escape') closeModal();
     });
 </script>

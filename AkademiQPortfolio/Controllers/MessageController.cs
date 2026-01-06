@@ -79,7 +79,7 @@ namespace AkademiQPortfolio.Controllers
                 _context.SaveChanges();
 
                 TempData["MessageSent"] = "Mesaj başarıyla gönderildi!";
-                return RedirectToAction("Index", "Default");
+                return RedirectToAction("Index", "DefaultController1");
             }
 
             return View(message);

@@ -3,197 +3,577 @@
     ViewData["Title"] = "Eğitim Güncelle";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<main class="flex-1 flex flex-col h-full overflow-hidden relative bg-background-dark">
-    <!-- Animated background effects -->
-    <div class="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-accent-blue/5 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
-    <div class="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-accent-purple/5 rounded-full blur-[120px] pointer-events-none animate-pulse delay-700"></div>
-    <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-blue/3 rounded-full blur-[150px] pointer-events-none"></div>
-    <header class="flex items-center justify-between px-8 py-6 z-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
-        <div class="flex items-center gap-4">
-            <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 flex items-center justify-center shadow-lg shadow-accent-blue/10">
-                <span class="material-symbols-outlined text-accent-blue text-2xl">edit_square</span>
-            </div>
-            <div>
-                <h2 class="text-2xl font-bold text-white tracking-tight">Eğitim Güncelle</h2>
-                <p class="text-text-muted text-sm mt-0.5">Mevcut eğitim bilgilerinizi düzenleyin.</p>
-            </div>
-        </div>
-        <a href="/Education/Index" class="group flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium border border-white/5 hover:border-white/10">
-            <span class="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
-            Listeye Dön
-        </a>
-    </header>
-    <div class="flex-1 overflow-y-auto p-8 flex items-center justify-center relative z-0">
-        <div class="w-full max-w-2xl" style="animation: fadeInUp 0.5s ease-out;">
 
-            <!-- Edit Mode Indicator -->
-            <div class="flex items-center justify-center gap-3 mb-8">
-                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-accent-blue/10 border border-accent-blue/20">
-                    <span class="size-2 rounded-full bg-accent-blue animate-pulse"></span>
-                    <span class="text-accent-blue text-sm font-medium">Düzenleme Modu</span>
-                </div>
-                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                    <span class="material-symbols-outlined text-gray-400 text-sm">tag</span>
-                    <span class="text-gray-400 text-sm">ID: @Model.EducationId</span>
-                </div>
-            </div>
-            <form method="post" class="bg-card-dark/80 backdrop-blur-xl rounded-3xl border border-white/5 shadow-2xl p-8 relative overflow-hidden group hover:border-white/10 transition-all duration-500">
-                <input type="hidden" value="@Model.EducationId" name="EducationId" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-                <!-- Animated gradient border - Blue theme for edit -->
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-blue via-accent-purple to-accent-blue bg-[length:200%_100%] animate-gradient opacity-60 group-hover:opacity-100 transition-opacity"></div>
-
-                <!-- Corner decorations -->
-                <div class="absolute top-4 right-4 size-20 border border-white/5 rounded-full opacity-30"></div>
-                <div class="absolute top-6 right-6 size-12 border border-white/5 rounded-full opacity-20"></div>
-                <div class="mb-8 relative">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="material-symbols-outlined text-accent-blue text-xl">history_edu</span>
-                        <h3 class="text-xl font-bold text-white">Eğitim Detayları</h3>
-                        <span class="ml-auto px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-medium border border-amber-500/20">
-                            Düzenleniyor
-                        </span>
-                    </div>
-                    <p class="text-xs text-text-muted pl-8">Değişikliklerinizi yapıp kaydedin.</p>
-                </div>
-                <div class="space-y-6">
-                    <!-- School Name Input -->
-                    <div class="group/input" style="animation: fadeInUp 0.5s ease-out 0.1s both;">
-                        <label class="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-3 ml-1">
-                            <span class="size-1.5 rounded-full bg-accent-purple"></span>
-                            Okul / Kurum Adı
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <div class="size-8 rounded-lg bg-accent-purple/10 flex items-center justify-center group-focus-within/input:bg-accent-purple/20 transition-all">
-                                    <span class="material-symbols-outlined text-lg text-accent-purple">school</span>
-                                </div>
-                            </div>
-                            <input type="text" asp-for="Title" class="w-full bg-background-darker/50 border-2 border-white/5 text-white text-sm rounded-2xl block pl-16 pr-4 py-4 focus:border-accent-purple/50 focus:bg-background-darker focus:shadow-lg focus:shadow-accent-purple/5 outline-none transition-all placeholder:text-gray-600 hover:border-white/10" placeholder="Örn: İstanbul Teknik Üniversitesi">
-                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none opacity-0 group-focus-within/input:opacity-100 transition-opacity">
-                                <span class="material-symbols-outlined text-accent-purple text-sm">edit</span>
-                            </div>
-                        </div>
-                        <span asp-validation-for="Title" class="text-red-400 text-xs mt-2 block pl-1"></span>
-                    </div>
-                    <!-- Department Input -->
-                    <div class="group/input" style="animation: fadeInUp 0.5s ease-out 0.2s both;">
-                        <label class="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-3 ml-1">
-                            <span class="size-1.5 rounded-full bg-accent-blue"></span>
-                            Bölüm / Alan
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <div class="size-8 rounded-lg bg-accent-blue/10 flex items-center justify-center group-focus-within/input:bg-accent-blue/20 transition-all">
-                                    <span class="material-symbols-outlined text-lg text-accent-blue">domain</span>
-                                </div>
-                            </div>
-                            <input type="text" asp-for="Department" class="w-full bg-background-darker/50 border-2 border-white/5 text-white text-sm rounded-2xl block pl-16 pr-4 py-4 focus:border-accent-blue/50 focus:bg-background-darker focus:shadow-lg focus:shadow-accent-blue/5 outline-none transition-all placeholder:text-gray-600 hover:border-white/10" placeholder="Örn: Bilgisayar Mühendisliği">
-                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none opacity-0 group-focus-within/input:opacity-100 transition-opacity">
-                                <span class="material-symbols-outlined text-accent-blue text-sm">edit</span>
-                            </div>
-                        </div>
-                        <span asp-validation-for="Department" class="text-red-400 text-xs mt-2 block pl-1"></span>
-                    </div>
-                    <!-- Date Range Input -->
-                    <div class="group/input" style="animation: fadeInUp 0.5s ease-out 0.3s both;">
-                        <label class="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider mb-3 ml-1">
-                            <span class="size-1.5 rounded-full bg-green-400"></span>
-                            Tarih Aralığı
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <div class="size-8 rounded-lg bg-green-500/10 flex items-center justify-center group-focus-within/input:bg-green-500/20 transition-all">
-                                    <span class="material-symbols-outlined text-lg text-green-400">date_range</span>
-                                </div>
-                            </div>
-                            <input type="text" asp-for="EducationDate" class="w-full bg-background-darker/50 border-2 border-white/5 text-white text-sm rounded-2xl block pl-16 pr-4 py-4 focus:border-green-500/50 focus:bg-background-darker focus:shadow-lg focus:shadow-green-500/5 outline-none transition-all placeholder:text-gray-600 hover:border-white/10" placeholder="Örn: 2018 - 2022">
-                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none opacity-0 group-focus-within/input:opacity-100 transition-opacity">
-                                <span class="material-symbols-outlined text-green-400 text-sm">edit</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2 mt-2 pl-1">
-                            <span class="material-symbols-outlined text-xs text-gray-500">info</span>
-                            <p class="text-[11px] text-gray-500">Yıl aralığı veya 'Devam Ediyor' şeklinde giriniz.</p>
-                        </div>
-                        <span asp-validation-for="EducationDate" class="text-red-400 text-xs mt-1 block pl-1"></span>
-                    </div>
-                </div>
-                <!-- Update Warning -->
-                <div class="mt-8 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10" style="animation: fadeInUp 0.5s ease-out 0.4s both;">
-                    <div class="flex items-start gap-3">
-                        <div class="size-8 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <span class="material-symbols-outlined text-amber-400 text-sm">tips_and_updates</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold text-white mb-1">Güncelleme Notu</p>
-                            <p class="text-[11px] text-text-muted leading-relaxed">Değişiklikleriniz kaydedildikten sonra portfolyonuzda hemen görünecektir.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between gap-4 pt-6 mt-8 border-t border-white/5" style="animation: fadeInUp 0.5s ease-out 0.5s both;">
-                    <div class="flex items-center gap-2 text-xs text-text-muted">
-                        <span class="material-symbols-outlined text-sm text-green-400">check_circle</span>
-                        <span>Otomatik kaydedilmez</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="/Education/Index" class="px-6 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all border border-transparent hover:border-white/10">
-                            Vazgeç
-                        </a>
-                        <button type="submit" class="group/btn flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-accent-blue to-accent-purple hover:opacity-90 text-white font-bold text-sm transition-all shadow-lg shadow-accent-blue/20 active:scale-95 hover:shadow-accent-blue/40 hover:scale-[1.02]">
-                            <span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform">sync</span>
-                            Güncelle
-                        </button>
-                    </div>
-                </div>
-            </form>
-            <!-- Additional Actions -->
-            <div class="flex items-center justify-center gap-6 mt-6" style="animation: fadeInUp 0.5s ease-out 0.6s both;">
-                <a href="/Education/DeleteEducation/@Model.EducationId" class="inline-flex items-center gap-2 text-xs text-red-400/60 hover:text-red-400 transition-colors">
-                    <span class="material-symbols-outlined text-sm">delete</span>
-                    Bu kaydı sil
-                </a>
-                <span class="text-white/10">|</span>
-                <a href="#" class="inline-flex items-center gap-2 text-xs text-text-muted hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-sm">help</span>
-                    Yardım
-                </a>
-            </div>
-        </div>
-    </div>
-</main>
 <style>
+    /* Base Container */
+    .update-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0a0a12 0%, #12121e 50%, #0d1117 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Ambient Glow */
+    .ambient-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+    }
+
+    .glow-1 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+        top: -10%;
+        right: -10%;
+        animation: pulse-glow 8s ease-in-out infinite;
+    }
+
+    .glow-2 {
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+        bottom: -10%;
+        left: -10%;
+        animation: pulse-glow 10s ease-in-out infinite;
+        animation-delay: 3s;
+    }
+
+    @@keyframes pulse-glow {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Form Wrapper */
+    .form-wrapper {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    /* Mode Indicators */
+    .mode-indicators {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .mode-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .mode-badge.edit {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        color: #fcd34d;
+    }
+
+    .mode-badge.edit .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: #f59e0b;
+        border-radius: 50%;
+        animation: pulse-dot 2s infinite;
+    }
+
+    .mode-badge.id {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    @@keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+
+    /* Form Card */
+    .form-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        position: relative;
+    }
+
+    .form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #3b82f6, #f59e0b);
+        background-size: 200% 100%;
+        animation: gradient-slide 3s ease infinite;
+    }
+
+    @@keyframes gradient-slide {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .form-body {
+        padding: 40px;
+    }
+
+    .form-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+
+    .form-header i {
+        font-size: 1.25rem;
+        color: #f59e0b;
+    }
+
+    .form-header h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+        flex: 1;
+    }
+
+    .editing-badge {
+        padding: 6px 12px;
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-radius: 8px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: #fcd34d;
+    }
+
+    .form-description {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 0 0 32px 0;
+        padding-left: 32px;
+    }
+
+    /* Form Group */
+    .form-group {
+        margin-bottom: 24px;
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 12px;
+        margin-left: 4px;
+    }
+
+    .label-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .label-dot.amber { background: #f59e0b; }
+    .label-dot.blue { background: #3b82f6; }
+    .label-dot.green { background: #10b981; }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon-box {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .input-icon-box.amber { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
+    .input-icon-box.blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .input-icon-box.green { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+
+    .form-input {
+        width: 100%;
+        padding: 18px 20px 18px 68px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        color: white;
+        font-size: 0.95rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.25);
+    }
+
+    .form-input:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .form-input:focus {
+        border-color: rgba(245, 158, 11, 0.5);
+        background: rgba(245, 158, 11, 0.05);
+        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+    }
+
+    .input-hint {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        margin-left: 4px;
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.35);
+    }
+
+    .validation-error {
+        color: #f87171;
+        font-size: 0.8rem;
+        margin-top: 8px;
+        margin-left: 4px;
+    }
+
+    /* Warning Box */
+    .warning-box {
+        background: rgba(245, 158, 11, 0.08);
+        border: 1px solid rgba(245, 158, 11, 0.15);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-top: 32px;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .warning-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: rgba(245, 158, 11, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fcd34d;
+        flex-shrink: 0;
+    }
+
+    .warning-content h5 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: white;
+        margin: 0 0 4px 0;
+    }
+
+    .warning-content p {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* Form Footer */
+    .form-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .save-note {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .save-note i { color: #10b981; }
+
+    .footer-buttons {
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn-cancel {
+        padding: 14px 24px;
+        border-radius: 12px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    /* Additional Actions */
+    .additional-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 24px;
+    }
+
+    .action-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .action-link.delete {
+        color: rgba(239, 68, 68, 0.6);
+    }
+
+    .action-link.delete:hover {
+        color: #f87171;
+    }
+
+    .action-link.help {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .action-link.help:hover {
+        color: white;
+    }
+
+    .action-divider {
+        color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Animations */
     @@keyframes fadeInUp {
         from {
             opacity: 0;
             transform: translateY(20px);
         }
-
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
 
-    @@keyframes gradient {
-        0% {
-            background-position: 0% 50%;
+    /* Responsive */
+    @@media (max-width: 576px) {
+        .form-body {
+            padding: 28px;
         }
 
-        50% {
-            background-position: 100% 50%;
+        .mode-indicators {
+            flex-direction: column;
         }
 
-        100% {
-            background-position: 0% 50%;
+        .form-footer {
+            flex-direction: column;
+            gap: 16px;
         }
-    }
 
-    .animate-gradient {
-        animation: gradient 3s ease infinite;
-    }
+        .save-note {
+            order: 2;
+        }
 
-    .delay-700 {
-        animation-delay: 700ms;
+        .footer-buttons {
+            width: 100%;
+        }
+
+        .btn-cancel, .btn-submit {
+            flex: 1;
+            justify-content: center;
+        }
     }
 </style>
+
+<main class="update-container">
+    <!-- Ambient Glow -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <div class="form-wrapper">
+        <!-- Mode Indicators -->
+        <div class="mode-indicators" style="animation: fadeInUp 0.4s ease-out;">
+            <div class="mode-badge edit">
+                <span class="pulse-dot"></span>
+                Düzenleme Modu
+            </div>
+            <div class="mode-badge id">
+                <i class="fa-solid fa-hashtag"></i>
+                ID: @Model.EducationId
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card" style="animation: fadeInUp 0.5s ease-out 0.1s both;">
+            <form method="post" class="form-body">
+                <input type="hidden" value="@Model.EducationId" name="EducationId" />
+
+                <div class="form-header">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <h3>Eğitim Detayları</h3>
+                    <span class="editing-badge">Düzenleniyor</span>
+                </div>
+                <p class="form-description">Değişikliklerinizi yapıp kaydedin.</p>
+
+                <!-- School Name -->
+                <div class="form-group" style="animation-delay: 0.15s;">
+                    <label class="form-label">
+                        <span class="label-dot amber"></span>
+                        Okul / Kurum Adı
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" asp-for="Title" class="form-input" placeholder="Örn: İstanbul Teknik Üniversitesi">
+                        <div class="input-icon-box amber">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Title" class="validation-error"></span>
+                </div>
+
+                <!-- Department -->
+                <div class="form-group" style="animation-delay: 0.2s;">
+                    <label class="form-label">
+                        <span class="label-dot blue"></span>
+                        Bölüm / Alan
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" asp-for="Department" class="form-input" placeholder="Örn: Bilgisayar Mühendisliği">
+                        <div class="input-icon-box blue">
+                            <i class="fa-solid fa-code-branch"></i>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Department" class="validation-error"></span>
+                </div>
+
+                <!-- Date Range -->
+                <div class="form-group" style="animation-delay: 0.25s;">
+                    <label class="form-label">
+                        <span class="label-dot green"></span>
+                        Tarih Aralığı
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" asp-for="EducationDate" class="form-input" placeholder="Örn: 2018 - 2022">
+                        <div class="input-icon-box green">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                    </div>
+                    <div class="input-hint">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Yıl aralığı veya 'Devam Ediyor' şeklinde giriniz.
+                    </div>
+                    <span asp-validation-for="EducationDate" class="validation-error"></span>
+                </div>
+
+                <!-- Warning Box -->
+                <div class="warning-box" style="animation: fadeInUp 0.5s ease-out 0.3s both;">
+                    <div class="warning-icon">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <div class="warning-content">
+                        <h5>Güncelleme Notu</h5>
+                        <p>Değişiklikleriniz kaydedildikten sonra portfolyonuzda hemen görünecektir.</p>
+                    </div>
+                </div>
+
+                <!-- Form Footer -->
+                <div class="form-footer" style="animation: fadeInUp 0.5s ease-out 0.35s both;">
+                    <div class="save-note">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Otomatik kaydedilmez
+                    </div>
+                    <div class="footer-buttons">
+                        <a href="/Education/Index" class="btn-cancel">Vazgeç</a>
+                        <button type="submit" class="btn-submit">
+                            <i class="fa-solid fa-rotate"></i>
+                            Güncelle
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Additional Actions -->
+        <div class="additional-actions" style="animation: fadeInUp 0.5s ease-out 0.4s both;">
+            <a href="/Education/DeleteEducation/@Model.EducationId" class="action-link delete">
+                <i class="fa-regular fa-trash-can"></i>
+                Bu kaydı sil
+            </a>
+            <span class="action-divider">|</span>
+            <a href="#" class="action-link help">
+                <i class="fa-regular fa-circle-question"></i>
+                Yardım
+            </a>
+        </div>
+    </div>
+</main>

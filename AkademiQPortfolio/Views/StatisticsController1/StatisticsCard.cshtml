@@ -1,275 +1,934 @@
 ﻿@{
-    ViewData["Title"] = "StatisticsCards";
+    ViewData["Title"] = "İstatistikler";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<main class="flex-1 flex flex-col h-full overflow-hidden relative bg-background-dark">
-    <!-- Animated background effects -->
-    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent-purple/5 rounded-full blur-[150px] pointer-events-none animate-pulse"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-accent-blue/5 rounded-full blur-[120px] pointer-events-none animate-pulse delay-1000"></div>
-    <div class="absolute top-[40%] right-[20%] w-[300px] h-[300px] bg-emerald-500/3 rounded-full blur-[100px] pointer-events-none"></div>
-
-    <header class="flex items-center justify-between px-8 py-6 z-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
-        <div class="flex items-center gap-4">
-            <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-purple/20 to-accent-blue/20 flex items-center justify-center shadow-lg shadow-accent-purple/10">
-                <span class="material-symbols-outlined text-accent-purple text-2xl">analytics</span>
-            </div>
-            <div>
-                <h2 class="text-2xl font-bold text-white tracking-tight">Genel Bakış & İstatistikler</h2>
-                <p class="text-text-muted text-sm mt-0.5">Portfolyo performansınızı takip edin.</p>
-            </div>
-        </div>
-        <div class="flex items-center gap-3">
-            <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-text-muted">
-                <span class="size-2 rounded-full bg-green-400 animate-pulse"></span>
-                Canlı Veriler
-            </div>
-        </div>
-    </header>
-
-    <div class="flex-1 overflow-y-auto p-8 pt-6 pb-20 scroll-smooth relative z-0">
-        <div class="max-w-7xl mx-auto space-y-8">
-
-            <!-- Main Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" style="animation: fadeInUp 0.5s ease-out;">
-
-                <!-- Messages Card -->
-                <div class="group relative bg-card-dark/80 backdrop-blur-xl p-6 rounded-3xl border border-white/5 hover:border-accent-purple/30 transition-all duration-500 overflow-hidden">
-                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-accent-purple/10 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-purple to-accent-blue opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-                    <div class="relative flex items-center gap-4 mb-6">
-                        <div class="p-4 bg-gradient-to-br from-accent-purple to-accent-blue rounded-2xl text-white shadow-lg shadow-accent-purple/20 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-2xl">mail</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-medium text-text-muted uppercase tracking-wider">Toplam Mesaj</p>
-                            <h3 class="text-4xl font-black text-white">@ViewBag.messageCount</h3>
-                        </div>
-                    </div>
-
-                    <div class="relative flex gap-3">
-                        <div class="flex-1 bg-green-500/10 p-4 rounded-2xl border border-green-500/20 group-hover:border-green-500/40 transition-all">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="size-2 rounded-full bg-green-400"></span>
-                                <p class="text-xs text-green-400 font-semibold">Okundu</p>
-                            </div>
-                            <p class="text-2xl font-bold text-green-400">@ViewBag.messageCountByIsReadTrue</p>
-                        </div>
-                        <div class="flex-1 bg-red-500/10 p-4 rounded-2xl border border-red-500/20 group-hover:border-red-500/40 transition-all">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="size-2 rounded-full bg-red-400 animate-pulse"></span>
-                                <p class="text-xs text-red-400 font-semibold">Okunmadı</p>
-                            </div>
-                            <p class="text-2xl font-bold text-red-400">@ViewBag.messageCountByIsReadFalse</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Skills Card -->
-                <div class="group relative bg-card-dark/80 backdrop-blur-xl p-6 rounded-3xl border border-white/5 hover:border-amber-500/30 transition-all duration-500 overflow-hidden">
-                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-                    <div class="relative flex items-center gap-4 mb-6">
-                        <div class="p-4 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl text-white shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-2xl">bolt</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-medium text-text-muted uppercase tracking-wider">Toplam Yetenek</p>
-                            <h3 class="text-4xl font-black text-white">@ViewBag.skillCount</h3>
-                        </div>
-                    </div>
-
-                    <div class="relative">
-                        <div class="flex justify-between mb-3">
-                            <span class="text-xs font-medium text-text-muted">Genel Yetkinlik Ortalaması</span>
-                            <span class="text-sm font-bold text-amber-400">%@Convert.ToDecimal(ViewBag.skillAvgValue).ToString("0")</span>
-                        </div>
-                        <div class="w-full bg-white/5 rounded-full h-3 overflow-hidden">
-                            <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-3 rounded-full shadow-lg shadow-amber-500/30 transition-all duration-1000 relative" style="width: @ViewBag.skillAvgValue%">
-                                <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between mt-2 text-[10px] text-text-muted">
-                            <span>0%</span>
-                            <span>100%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Performance Card -->
-                <div class="group relative bg-gradient-to-br from-emerald-600 to-teal-700 p-6 rounded-3xl shadow-xl shadow-emerald-500/10 hover:shadow-emerald-500/20 hover:scale-[1.02] transition-all duration-500 overflow-hidden">
-                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\" 60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.03\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\" /%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
-                    <div class="absolute top-4 right-4 size-24 border border-white/10 rounded-full"></div>
-                    <div class="absolute top-8 right-8 size-16 border border-white/10 rounded-full"></div>
-
-                    <div class="relative flex flex-col h-full justify-between">
-                        <div class="flex justify-between items-start">
-                            <div class="p-3 bg-white/10 backdrop-blur-md rounded-xl text-white">
-                                <span class="material-symbols-outlined text-2xl">workspace_premium</span>
-                            </div>
-                            <span class="text-white/80 text-xs font-medium border border-white/20 px-3 py-1.5 rounded-full backdrop-blur-sm bg-white/5">
-                                ⚡ Performans
-                            </span>
-                        </div>
-                        <div class="mt-8 text-white">
-                            <h3 class="text-5xl font-black tracking-tight">@ViewBag.skillValueBiggerThan70</h3>
-                            <p class="text-emerald-100 text-sm mt-1">70 Puan Üzeri Uzmanlık</p>
-                        </div>
-                        <div class="mt-6 pt-4 border-t border-white/10 text-white/70 text-xs flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">trending_up</span>
-                            Yüksek yetkinlik seviyesindeki yetenekleriniz
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Message Categories Section -->
-            <div class="mt-4" style="animation: fadeInUp 0.5s ease-out 0.2s both;">
-                <div class="flex items-center justify-between mb-6">
-                    <div class="flex items-center gap-3">
-                        <div class="size-10 rounded-xl bg-white/5 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-accent-blue">category</span>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Mesaj Kategorileri</h3>
-                            <p class="text-xs text-text-muted">Gelen mesajların konu dağılımı</p>
-                        </div>
-                    </div>
-                    <a href="/Message/Inbox" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all text-xs font-medium border border-white/5">
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        Tümünü Gör
-                    </a>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-                    <!-- Project Offers -->
-                    <div class="group relative bg-card-dark/60 backdrop-blur-xl border border-white/5 rounded-3xl p-6 hover:bg-accent-purple/10 hover:border-accent-purple/30 transition-all duration-500 cursor-pointer">
-                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-accent-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-3 bg-accent-purple/10 rounded-2xl group-hover:bg-accent-purple/20 transition-all group-hover:scale-110">
-                                <span class="material-symbols-outlined text-xl text-accent-purple">work</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-3xl font-black text-white group-hover:text-accent-purple transition-colors">@ViewBag.messageSubjectByWorkOffer</span>
-                                <span class="material-symbols-outlined text-accent-purple text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_outward</span>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-white group-hover:text-accent-purple transition-colors">Proje Teklifleri</h4>
-                            <p class="text-xs text-text-muted mt-1">İş Birliği Talepleri</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-white/5">
-                            <div class="flex items-center gap-2 text-xs text-text-muted">
-                                <span class="size-1.5 rounded-full bg-accent-purple"></span>
-                                <span>Aktif teklifler</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Web / API -->
-                    <div class="group relative bg-card-dark/60 backdrop-blur-xl border border-white/5 rounded-3xl p-6 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all duration-500 cursor-pointer">
-                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-3 bg-emerald-500/10 rounded-2xl group-hover:bg-emerald-500/20 transition-all group-hover:scale-110">
-                                <span class="material-symbols-outlined text-xl text-emerald-400">code</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-3xl font-black text-white group-hover:text-emerald-400 transition-colors">@ViewBag.messageSubjectByApiDevelopment</span>
-                                <span class="material-symbols-outlined text-emerald-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_outward</span>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Web / API</h4>
-                            <p class="text-xs text-text-muted mt-1">Geliştirme Talepleri</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-white/5">
-                            <div class="flex items-center gap-2 text-xs text-text-muted">
-                                <span class="size-1.5 rounded-full bg-emerald-400"></span>
-                                <span>Teknik projeler</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Education -->
-                    <div class="group relative bg-card-dark/60 backdrop-blur-xl border border-white/5 rounded-3xl p-6 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all duration-500 cursor-pointer">
-                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-3 bg-amber-500/10 rounded-2xl group-hover:bg-amber-500/20 transition-all group-hover:scale-110">
-                                <span class="material-symbols-outlined text-xl text-amber-400">school</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-3xl font-black text-white group-hover:text-amber-400 transition-colors">@ViewBag.messageSubjectByEducationOffer</span>
-                                <span class="material-symbols-outlined text-amber-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_outward</span>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Eğitim & Kurumsal</h4>
-                            <p class="text-xs text-text-muted mt-1">Akademik Talepler</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-white/5">
-                            <div class="flex items-center gap-2 text-xs text-text-muted">
-                                <span class="size-1.5 rounded-full bg-amber-400"></span>
-                                <span>Eğitim fırsatları</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="mt-4 p-6 bg-card-dark/40 backdrop-blur-xl rounded-3xl border border-white/5" style="animation: fadeInUp 0.5s ease-out 0.4s both;">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="size-12 rounded-2xl bg-gradient-to-br from-accent-purple/20 to-accent-blue/20 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-accent-purple">rocket_launch</span>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold">Hızlı Erişim</h4>
-                            <p class="text-xs text-text-muted">Sık kullanılan işlemler</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="/Message/Inbox" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium border border-white/5">
-                            <span class="material-symbols-outlined text-lg">inbox</span>
-                            Mesajlar
-                        </a>
-                        <a href="/Skill/Index" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-sm font-medium border border-white/5">
-                            <span class="material-symbols-outlined text-lg">stars</span>
-                            Yetenekler
-                        </a>
-                        <a href="/Education/Index" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-accent hover:opacity-90 text-white font-bold text-sm transition-all shadow-lg shadow-accent-purple/20">
-                            <span class="material-symbols-outlined text-lg">add</span>
-                            Yeni Ekle
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</main>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
+    /* Base Container */
+    .stats-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0a0a12 0%, #12121e 50%, #0d1117 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Ambient Glow */
+    .ambient-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .glow-1 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        top: -15%;
+        left: -10%;
+        animation: pulse-glow 8s ease-in-out infinite;
+    }
+
+    .glow-2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+        bottom: -10%;
+        right: -5%;
+        animation: pulse-glow 10s ease-in-out infinite;
+        animation-delay: 3s;
+    }
+
+    .glow-3 {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+        top: 40%;
+        right: 15%;
+        animation: pulse-glow 12s ease-in-out infinite;
+        animation-delay: 5s;
+    }
+
+    @@keyframes pulse-glow {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Header */
+    .page-header {
+        position: relative;
+        z-index: 10;
+        padding: 32px 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(10, 10, 18, 0.8);
+        backdrop-filter: blur(20px);
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #a5b4fc;
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+    }
+
+    .header-text h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 4px 0;
+        letter-spacing: -0.02em;
+    }
+
+    .header-text p {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+    }
+
+    .live-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+        font-size: 0.85rem;
+        color: #6ee7b7;
+    }
+
+    .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #10b981;
+        animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @@keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Main Content */
+    .main-content {
+        position: relative;
+        z-index: 5;
+        padding: 32px 40px 80px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 32px;
+    }
+
+    @@media (max-width: 1024px) {
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @@media (max-width: 768px) {
+        .stats-grid { grid-template-columns: 1fr; }
+        .page-header { padding: 24px; }
+        .main-content { padding: 24px; }
+    }
+
+    /* Stat Card */
+    .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 24px;
+        padding: 28px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+
+    .stat-card.purple::before { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+    .stat-card.purple:hover { border-color: rgba(99, 102, 241, 0.3); }
+
+    .stat-card.amber::before { background: linear-gradient(90deg, #f59e0b, #f97316); }
+    .stat-card.amber:hover { border-color: rgba(245, 158, 11, 0.3); }
+
+    /* Stat Card Header */
+    .stat-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .stat-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover .stat-icon {
+        transform: scale(1.1);
+    }
+
+    .stat-icon.purple {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    }
+
+    .stat-icon.amber {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+    }
+
+    .stat-info label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: white;
+        line-height: 1;
+    }
+
+    /* Sub Stats */
+    .sub-stats {
+        display: flex;
+        gap: 12px;
+    }
+
+    .sub-stat {
+        flex: 1;
+        padding: 16px;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .sub-stat.success {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .sub-stat.success:hover {
+        border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .sub-stat.danger {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .sub-stat.danger:hover {
+        border-color: rgba(239, 68, 68, 0.4);
+    }
+
+    .sub-stat-header {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+    }
+
+    .sub-stat-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .sub-stat.success .sub-stat-dot { background: #10b981; }
+    .sub-stat.danger .sub-stat-dot { background: #ef4444; animation: pulse-dot 2s infinite; }
+
+    .sub-stat-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sub-stat.success .sub-stat-label { color: #6ee7b7; }
+    .sub-stat.danger .sub-stat-label { color: #fca5a5; }
+
+    .sub-stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .sub-stat.success .sub-stat-value { color: #6ee7b7; }
+    .sub-stat.danger .sub-stat-value { color: #fca5a5; }
+
+    /* Progress Section */
+    .progress-section label {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .progress-value {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #fcd34d;
+    }
+
+    .progress-track {
+        height: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #f59e0b, #f97316);
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        position: relative;
+    }
+
+    .progress-fill::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shimmer 2s infinite;
+    }
+
+    @@keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    .progress-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px;
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.35);
+    }
+
+    /* Performance Card */
+    .performance-card {
+        background: linear-gradient(135deg, #059669, #0d9488);
+        border-radius: 24px;
+        padding: 28px;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease-out forwards;
+        transition: all 0.4s ease;
+    }
+
+    .performance-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(16, 185, 129, 0.3);
+    }
+
+    .performance-bg {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 100px;
+        height: 100px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+
+    .performance-bg::after {
+        content: '';
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+
+    .performance-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 32px;
+    }
+
+    .performance-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    .performance-badge {
+        padding: 8px 14px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        font-size: 0.75rem;
+        color: white;
+    }
+
+    .performance-value {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: white;
+        line-height: 1;
+        margin-bottom: 8px;
+    }
+
+    .performance-label {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .performance-footer {
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Section Header */
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
+
+    .section-title-group {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .section-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #60a5fa;
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 4px 0;
+    }
+
+    .section-subtitle {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 0;
+    }
+
+    .section-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .section-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    /* Category Cards Grid */
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    @@media (max-width: 768px) {
+        .category-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Category Card */
+    .category-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 24px;
+        padding: 24px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        animation: fadeInUp 0.5s ease-out forwards;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .category-card:hover::before { opacity: 1; }
+
+    .category-card.purple::before { background: linear-gradient(90deg, #6366f1, transparent); }
+    .category-card.purple:hover { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.3); }
+
+    .category-card.green::before { background: linear-gradient(90deg, #10b981, transparent); }
+    .category-card.green:hover { background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3); }
+
+    .category-card.amber::before { background: linear-gradient(90deg, #f59e0b, transparent); }
+    .category-card.amber:hover { background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.3); }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    .category-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .category-card:hover .category-icon { transform: scale(1.1); }
+
+    .category-icon.purple { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; }
+    .category-icon.green { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+    .category-icon.amber { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
+
+    .category-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: white;
+        transition: color 0.3s ease;
+    }
+
+    .category-card.purple:hover .category-value { color: #a5b4fc; }
+    .category-card.green:hover .category-value { color: #6ee7b7; }
+    .category-card.amber:hover .category-value { color: #fcd34d; }
+
+    .category-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: white;
+        margin: 0 0 4px 0;
+        transition: color 0.3s ease;
+    }
+
+    .category-card.purple:hover .category-title { color: #a5b4fc; }
+    .category-card.green:hover .category-title { color: #6ee7b7; }
+    .category-card.amber:hover .category-title { color: #fcd34d; }
+
+    .category-subtitle {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 0;
+    }
+
+    .category-footer {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .category-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .category-dot.purple { background: #6366f1; }
+    .category-dot.green { background: #10b981; }
+    .category-dot.amber { background: #f59e0b; }
+
+    /* Quick Actions */
+    .quick-actions {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 24px;
+        padding: 24px 28px;
+        margin-top: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        animation: fadeInUp 0.5s ease-out 0.4s both;
+    }
+
+    .quick-actions-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .quick-actions-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: #a5b4fc;
+    }
+
+    .quick-actions-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: white;
+        margin: 0 0 4px 0;
+    }
+
+    .quick-actions-subtitle {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 0;
+    }
+
+    .quick-actions-buttons {
+        display: flex;
+        gap: 12px;
+    }
+
+    .quick-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .quick-btn.secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .quick-btn.secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    .quick-btn.primary {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    }
+
+    .quick-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Animations */
     @@keyframes fadeInUp {
         from {
             opacity: 0;
             transform: translateY(20px);
         }
-
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
-
-    .delay-1000 {
-        animation-delay: 1000ms;
-    }
 </style>
+
+<main class="stats-container">
+    <!-- Ambient Glow -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-icon">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <div class="header-text">
+                    <h1>Genel Bakış & İstatistikler</h1>
+                    <p>Portfolyo performansınızı takip edin</p>
+                </div>
+            </div>
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                Canlı Veriler
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <!-- Messages Card -->
+            <div class="stat-card purple" style="animation-delay: 0.1s;">
+                <div class="stat-header">
+                    <div class="stat-icon purple">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <div class="stat-info">
+                        <label>Toplam Mesaj</label>
+                        <div class="stat-value">@ViewBag.messageCount</div>
+                    </div>
+                </div>
+                <div class="sub-stats">
+                    <div class="sub-stat success">
+                        <div class="sub-stat-header">
+                            <span class="sub-stat-dot"></span>
+                            <span class="sub-stat-label">Okundu</span>
+                        </div>
+                        <div class="sub-stat-value">@ViewBag.messageCountByIsReadTrue</div>
+                    </div>
+                    <div class="sub-stat danger">
+                        <div class="sub-stat-header">
+                            <span class="sub-stat-dot"></span>
+                            <span class="sub-stat-label">Okunmadı</span>
+                        </div>
+                        <div class="sub-stat-value">@ViewBag.messageCountByIsReadFalse</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Card -->
+            <div class="stat-card amber" style="animation-delay: 0.2s;">
+                <div class="stat-header">
+                    <div class="stat-icon amber">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <label>Toplam Yetenek</label>
+                        <div class="stat-value">@ViewBag.skillCount</div>
+                    </div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <label>Genel Yetkinlik Ortalaması</label>
+                        <span class="progress-value">%@Convert.ToDecimal(ViewBag.skillAvgValue).ToString("0")</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: @ViewBag.skillAvgValue%"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Card -->
+            <div class="performance-card" style="animation-delay: 0.3s;">
+                <div class="performance-bg"></div>
+                <div class="performance-header">
+                    <div class="performance-icon">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <span class="performance-badge">⚡ Performans</span>
+                </div>
+                <div class="performance-value">@ViewBag.skillValueBiggerThan70</div>
+                <div class="performance-label">70 Puan Üzeri Uzmanlık</div>
+                <div class="performance-footer">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                    Yüksek yetkinlik seviyesindeki yetenekleriniz
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Categories Section -->
+        <div style="margin-top: 40px; animation: fadeInUp 0.5s ease-out 0.2s both;">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <div class="section-icon">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <h3 class="section-title">Mesaj Kategorileri</h3>
+                        <p class="section-subtitle">Gelen mesajların konu dağılımı</p>
+                    </div>
+                </div>
+                <a href="/Message/Inbox" class="section-link">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Tümünü Gör
+                </a>
+            </div>
+
+            <div class="category-grid">
+                <!-- Project Offers -->
+                <div class="category-card purple" style="animation-delay: 0.25s;">
+                    <div class="category-header">
+                        <div class="category-icon purple">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <div class="category-value">@ViewBag.messageSubjectByWorkOffer</div>
+                    </div>
+                    <h4 class="category-title">Proje Teklifleri</h4>
+                    <p class="category-subtitle">İş Birliği Talepleri</p>
+                    <div class="category-footer">
+                        <span class="category-dot purple"></span>
+                        Aktif teklifler
+                    </div>
+                </div>
+
+                <!-- Web / API -->
+                <div class="category-card green" style="animation-delay: 0.3s;">
+                    <div class="category-header">
+                        <div class="category-icon green">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <div class="category-value">@ViewBag.messageSubjectByApiDevelopment</div>
+                    </div>
+                    <h4 class="category-title">Web / API</h4>
+                    <p class="category-subtitle">Geliştirme Talepleri</p>
+                    <div class="category-footer">
+                        <span class="category-dot green"></span>
+                        Teknik projeler
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="category-card amber" style="animation-delay: 0.35s;">
+                    <div class="category-header">
+                        <div class="category-icon amber">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div class="category-value">@ViewBag.messageSubjectByEducationOffer</div>
+                    </div>
+                    <h4 class="category-title">Eğitim & Kurumsal</h4>
+                    <p class="category-subtitle">Akademik Talepler</p>
+                    <div class="category-footer">
+                        <span class="category-dot amber"></span>
+                        Eğitim fırsatları
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="quick-actions-left">
+                <div class="quick-actions-icon">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <div>
+                    <h4 class="quick-actions-title">Hızlı Erişim</h4>
+                    <p class="quick-actions-subtitle">Sık kullanılan işlemler</p>
+                </div>
+            </div>
+            <div class="quick-actions-buttons">
+                <a href="/Message/Inbox" class="quick-btn secondary">
+                    <i class="fa-regular fa-envelope"></i>
+                    Mesajlar
+                </a>
+                <a href="/Skill/SkillList" class="quick-btn secondary">
+                    <i class="fa-solid fa-bolt"></i>
+                    Yetenekler
+                </a>
+                <a href="/Education/Index" class="quick-btn primary">
+                    <i class="fa-solid fa-plus"></i>
+                    Yeni Ekle
+                </a>
+            </div>
+        </div>
+    </div>
+</main>

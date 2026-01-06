@@ -1215,6 +1215,8 @@ select {
             opacity: 0.4;
         }
 
+
+
 .spacer {
     margin-bottom: 48px;
 }
@@ -1225,22 +1227,27 @@ select {
     }
 
     .section-img {
-        max-height: 280px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        object-fit: cover;
     }
+
 
     .section-nav {
         bottom: 16px;
         right: 16px;
     }
 
-        .section-nav a {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            font-size: 20px;
-            margin-top: 12px;
-        }
+    .section-nav a {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+        margin-top: 12px;
+    }
 }
+
 
 /* ==========================================================================
    10. Widgets
