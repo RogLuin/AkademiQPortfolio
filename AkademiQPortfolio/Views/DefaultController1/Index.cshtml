@@ -1,6 +1,6 @@
 ﻿
 @{
-    Layout = null;
+	Layout = null;
 }
 
 <!DOCTYPE html>
@@ -10,27 +10,28 @@
 
 <body>
 
-	@await Component.InvokeAsync("_DefaultRightAreaComponentPartial")
+@await Component.InvokeAsync("_DefaultNavbarComponentPartial")
+@await Component.InvokeAsync("_DefaultRightAreaComponentPartial")
 
-	@await Component.InvokeAsync("_DefaultNavbarComponentPartial")
-	
-	<div class="sections">
-		<div class="sections-wrapper clearfix">
-			@await Component.InvokeAsync("_DefaultFeatureComponentPartial")
-			@await Component.InvokeAsync("_DefaultAboutComponentPartial")
-			@await Component.InvokeAsync("_DefaultSkillComponentPartial")
-			@await Component.InvokeAsync("_DefaultExperianceComponentPartial")
-			@await Component.InvokeAsync("_DefaultEducationComponentPartial")
-			@await Component.InvokeAsync("_DefaultPortfolioComponentPartial")
-		
-			@await Component.InvokeAsync("_DefaultSendMessageComponentPartial")
-			
 
-		</div> 
-	</div> 
-	@await Component.InvokeAsync("_DefaultFooterComponentPartial")
-	@await Component.InvokeAsync("_DefaultScritsComponentPartial")
-	
+
+<div class="sections">
+	<div class="sections-wrapper clearfix">
+		@await Component.InvokeAsync("_DefaultFeatureComponentPartial")
+		@await Component.InvokeAsync("_DefaultAboutComponentPartial")
+		@await Component.InvokeAsync("_DefaultSkillComponentPartial")
+		@await Component.InvokeAsync("_DefaultExperianceComponentPartial")
+		@await Component.InvokeAsync("_DefaultEducationComponentPartial")
+		@await Component.InvokeAsync("_DefaultPortfolioComponentPartial")
+
+		@await Component.InvokeAsync("_DefaultSendMessageComponentPartial")
+
+
+	</div>
+</div>
+@await Component.InvokeAsync("_DefaultFooterComponentPartial")
+@await Component.InvokeAsync("_DefaultScritsComponentPartial")
+
 
 </body>
 </html>

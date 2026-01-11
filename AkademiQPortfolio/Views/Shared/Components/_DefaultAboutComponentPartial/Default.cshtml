@@ -7,7 +7,6 @@
 
 		@foreach (var item in Model)
 		{
-
 			<div class="row">
 				<div class="col-sm-3">
 					<img src="@item.ImageUrl" alt="man" class="img-responsive section-img">
@@ -25,7 +24,7 @@
 						<li><b>Github:</b>https://github.com/RogLuin</li>
 					</ul> <!-- end .list-unstyled -->
 					<div class="spacer"></div>
-					<h3>Ne İş Yapıyorum?</h3>
+					<h3>Ne İş Yapıyorum ?</h3>
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="service">
@@ -33,11 +32,21 @@
 								<h5>@item.Title</h5>
 							</div> <!-- end .service -->
 						</div> <!-- end .col-sm-4 -->
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="service">
+									<div class="icon"><i class="ion-android-phone-portrait"></i></div>
+									<h5>Mobil Programlama</h5>
+								</div> <!-- end .service -->
+							</div> <!-- end .col-sm-4 -->
+
+							<!-- end .row -->
+						</div> <!-- end .container -->
 
 					</div> <!-- end .row -->
 				</div> <!-- end .col-sm-9 -->
 			</div>
 		}
-		<!-- end .row -->
-	</div> <!-- end .container -->
+
+	</div>
 </section>
